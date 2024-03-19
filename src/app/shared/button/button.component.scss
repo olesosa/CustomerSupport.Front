@@ -1,0 +1,21 @@
+$base-font: Trebuchet MS, sans-serif;
+$base-color: #166879;
+$secondary-color: #479eb4;
+$base-background-color: #81beca;
+$secondary-background-color: #ebe5e1;
+$button-color: #fda52b;
+
+.main-button{
+
+  button{
+    background-color: $button-color;
+    border: none;
+    border-radius: 20px;
+    color: $secondary-background-color;
+    width: fit-content;
+  }
+
+  & :hover{
+    background-color: darken($button-color, 10%)
+  }
+}

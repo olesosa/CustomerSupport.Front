@@ -9,7 +9,7 @@ const routes: Routes = [
     component: MainPageComponent
   },
   {
-    path:'admin-page',
+    path:'admin',
     component: AdminPageComponent
   },
 ];
