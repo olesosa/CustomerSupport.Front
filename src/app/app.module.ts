@@ -3,24 +3,22 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { HeaderComponent } from './shared/header/header.component';
-import { FooterComponent } from './shared/footer/footer.component';
-import { ButtonComponent } from './shared/button/button.component';
-import {MainPageComponent} from "./pages/main-page/main-page.component";
+import {SharedModule} from "./shared/modules/shared.module";
+import {MainPageModule} from "./core/pages/main-page/main-page.module";
 
 @NgModule({
   declarations: [
     AppComponent,
-    MainPageComponent,
-    HeaderComponent,
-    FooterComponent,
-    ButtonComponent,
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    SharedModule,
+    MainPageModule,
   ],
-  providers: [],
+  providers: [
+  ], //
+  exports: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
