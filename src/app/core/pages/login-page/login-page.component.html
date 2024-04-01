@@ -1,0 +1,17 @@
+<app-header></app-header>
+
+<h1>Log In</h1>
+
+<form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+
+  <label for="email">Email</label>
+  <input id="email" type="email" formControlName="email" pInputText>
+
+  <label for="password">Password</label>
+  <input id="password" type="password" formControlName="password" pInputText>
+
+  <button type="submit" [disabled]="!loginForm.valid" pButton>Submit</button>
+
+</form>
+
+<app-footer></app-footer>

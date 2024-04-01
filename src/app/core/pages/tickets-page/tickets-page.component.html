@@ -1,0 +1,18 @@
+<app-header></app-header>
+
+<div class="tickets-list">
+  <p-dataView #dv [value]="tickets" [sortField]="sortField" [sortOrder]="sortOrder">
+    <ng-template pTemplate="header">
+      <p-dropdown [options]="sortOptions" (onChange)="onSortChange($event)"></p-dropdown>
+    </ng-template>
+    <ng-template pTemplate="list">
+      <div *ngFor="let ticket of tickets" class="list-item">
+        <p>{{ticket.number}} {{ticket.requestType}}  {{ticket.topic}}</p>
+      </div>
+
+    </ng-template>
+  </p-dataView>
+</div>
+
+
+<app-footer></app-footer>

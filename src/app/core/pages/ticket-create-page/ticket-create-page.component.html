@@ -1,0 +1,21 @@
+<app-header></app-header>
+
+<h1>Submit a Ticket</h1>
+
+<form >
+
+  <label>Choose request type</label>
+  <p-dropdown id="requestType" [formControl]="requestType" placeholder="Request type"></p-dropdown>
+
+  <label for="topic">Topic</label>
+  <input id="topic" type="text" [formControl]="topic" pInputText>
+
+  <label for="description">Description</label>
+  <textarea id="description" [formControl]="description" rows="5" cols="30" pInputTextarea [autoResize]="true"></textarea>
+
+  <br><br>
+  <p-button type="submit">Submit</p-button>
+
+</form>
+
+<app-footer></app-footer>

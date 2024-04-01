@@ -1,0 +1,22 @@
+@import "../../../shared/styles/variables";
+@import "../../../shared/styles/mixins";
+
+main {
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+
+  background-color: $background-color;
+
+  h1 {
+    color: $secondary-color;
+  }
+
+    p-button {
+      display: flex;
+      justify-content: center;
+      margin: 50px;
+    }
+
+}
