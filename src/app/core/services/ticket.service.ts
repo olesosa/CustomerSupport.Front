@@ -1,19 +1,35 @@
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
+import {Observable} from 'rxjs';
 import {TicketShortinfo} from "../interfaces/ticket-shortinfo";
+import {environment} from "../environments/environment";
+import {HttpClient} from "@angular/common/http";
+import {TicketFullinfo} from "../interfaces/ticket-fullinfo";
+import {TicketCreate} from "../interfaces/ticket-create";
 
 @Injectable({
   providedIn: 'root'
 })
 export class TicketService {
-  public tickets: Subject<any> = new Subject();
-  constructor() { }
 
-  public getAllTickets(): any {
-    this.tickets.next(['ticket1', 'ticket2']);
+  private apiUrl: string = `${environment.apiAddress}/Tickets`;
+  constructor(private readonly httpClient: HttpClient) { }
+
+  public getAll(): Observable<TicketShortinfo[]> {
+
+    return this.httpClient.get<TicketShortinfo[]>(this.apiUrl);
   }
 
-  public getTickets(): TicketShortinfo[]{
+  public getFullInfo(ticketId:string) : Observable<TicketFullinfo>{
+
+    return this.httpClient.get<TicketFullinfo>(this.apiUrl + `/${ticketId}`);
+  }
+
+  public create(ticket:TicketCreate) : Observable<TicketShortinfo>{
+
+    return this.httpClient.post<TicketShortinfo>(this.apiUrl, ticket);
+  }
+
+  public getFakeTickets(): TicketShortinfo[]{
     return [
       {id:'', number:0, requestType:'Request Type', topic:'Topic 1'},
       {id:'', number:1, requestType:'Request Type', topic:'Topic 2'},
