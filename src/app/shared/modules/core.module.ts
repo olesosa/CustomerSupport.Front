@@ -5,8 +5,6 @@ import {FooterComponent} from "../footer/footer.component";
 import {SharedModule} from "./shared.module";
 import {RouterLink} from "@angular/router";
 
-
-
 @NgModule({
   declarations: [
     HeaderComponent,

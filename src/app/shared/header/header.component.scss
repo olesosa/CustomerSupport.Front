@@ -5,10 +5,11 @@ header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 20px;
+  padding: 10px 10px 10px 20px;
   background-color: $base-color;
   border-bottom-left-radius: 30px;
   border-bottom-right-radius: 30px;
+  height: 12.5%;
 
   p-button {
     padding: 20px;
@@ -16,6 +17,7 @@ header {
 
   a {
     @include router-link-text;
+    font-size: 25px;
   }
 
   .auth-btn

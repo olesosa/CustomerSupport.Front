@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 import {AbstractControl, FormControl, FormGroup, ValidatorFn, Validators} from "@angular/forms";
 
 @Component({
@@ -8,18 +8,18 @@ import {AbstractControl, FormControl, FormGroup, ValidatorFn, Validators} from "
 })
 export class LoginPageComponent {
 
-  emailPattern:string = '^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$';
-  passwordPattern:string = '((?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{8,30})'
+  emailPattern: string = '^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$';
+  passwordPattern: string = '((?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{8,30})'
 
   loginForm = new FormGroup({
     email: new FormControl('',
       [Validators.required, Validators.pattern(this.emailPattern)]),
     password: new FormControl('',
       [Validators.required, Validators.pattern(this.passwordPattern)
-    ])
+      ])
   });
 
-  onSubmit() : void {
+  onSubmit(): void {
     console.log(this.loginForm.value.email, this.loginForm.value.password)
   }
 }

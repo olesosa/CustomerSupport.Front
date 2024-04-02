@@ -3,3 +3,11 @@
   color: inherit;
   cursor: pointer;
 }
+
+@mixin main-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height:75%;
+}

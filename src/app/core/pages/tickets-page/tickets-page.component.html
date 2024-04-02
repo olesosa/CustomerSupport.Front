@@ -1,7 +1,13 @@
 <app-header></app-header>
 
 <div class="tickets-list">
-  <p-dataView #dv [value]="tickets" [sortField]="sortField" [sortOrder]="sortOrder">
+  <p-dataView
+    #dv
+    [value]="tickets"
+    [sortField]="sortField"
+    [sortOrder]="sortOrder"
+    [paginator]="true"
+    [rows]="5">
     <ng-template pTemplate="header">
       <p-dropdown [options]="sortOptions" (onChange)="onSortChange($event)"></p-dropdown>
     </ng-template>

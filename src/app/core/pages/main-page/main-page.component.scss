@@ -6,8 +6,7 @@ main {
   display: flex;
   flex-direction: column;
   justify-content: space-around;
-
-  background-color: $background-color;
+  height: 75%;
 
   h1 {
     color: $secondary-color;
@@ -16,7 +15,7 @@ main {
     p-button {
       display: flex;
       justify-content: center;
-      margin: 50px;
+      margin: 50px 10px 50px 10px;
     }
 
 }

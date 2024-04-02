@@ -1,29 +1,31 @@
-form {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
+@import "../../../shared/styles/variables";
+@import "../../../shared/styles/mixins";
 
+form {
+  @include main-content;
 
   label{
-    padding-bottom: 20px;
-    padding-top: 10px;
+    margin: 10px;
     font-size: 120%;
   }
 
   input {
     border-radius: 30px;
-    width: 40vh;
+    width: 60vh;
   }
 
   textarea {
     border-radius: 30px;
     width: 60vh;
+    margin-bottom: 20px;
   }
 
+  span {
+    padding: 10px
+  }
 
-}
+  button{
+    margin: 15px;
+  }
 
-h1 {
-  padding-left: 10vh;
 }

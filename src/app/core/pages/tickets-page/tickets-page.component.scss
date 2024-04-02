@@ -1,4 +1,10 @@
+@import "../../../shared/styles/variables";
+@import "../../../shared/styles/mixins";
+
 .tickets-list {
+  margin-left: 5%;
+  margin-right: 5%;
+  height:75%;
 
   .list-item {
     border: 2px solid black;

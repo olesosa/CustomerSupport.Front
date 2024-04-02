@@ -6,5 +6,5 @@ import { Component } from '@angular/core';
   styleUrl: './dialog-page.component.scss'
 })
 export class DialogPageComponent {
-
+  products:string[] = ['mareneo1', 'marenao2', 'marenao2', 'marenao2', 'marenao2'];
 }
