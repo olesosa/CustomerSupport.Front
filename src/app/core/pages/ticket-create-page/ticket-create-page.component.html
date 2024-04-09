@@ -1,10 +1,8 @@
-<app-header></app-header>
-
 <form [formGroup]="ticketCreateForm" (ngSubmit)="onSubmit()">
   <h1>Submit a Ticket</h1>
 
   <label>Choose request type</label>
-  <p-dropdown id="requestType" formControlName="requestType" placeholder="Request type"></p-dropdown>
+  <p-dropdown id="requestType" [options]="requestTypes" formControlName="requestType" placeholder="Request type"></p-dropdown>
 
   <label for="topic">Topic</label>
   <input id="topic" type="text" formControlName="topic" pInputText>
@@ -23,5 +21,3 @@
   <button type="submit" [disabled]="!ticketCreateForm.valid" pButton>Submit</button>
 
 </form>
-
-<app-footer></app-footer>
