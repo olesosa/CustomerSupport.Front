@@ -9,5 +9,37 @@
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  height:75%;
+  min-height: 75vh;
+
+}
+
+@mixin spinner {
+  position: fixed;
+  z-index: 999;
+  height: 2em;
+  width: 2em;
+  margin: auto;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}
+
+@mixin spinner-before {
+  content: '';
+  display: block;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+@mixin btn-white{
+  margin: 10px;
+  color: white;
+  background-color: transparent;
+  border: 1px solid white;
+  border-radius: 25px;
 }

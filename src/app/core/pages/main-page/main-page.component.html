@@ -3,14 +3,32 @@
   <h1>Customer support service</h1>
   <h2>We help our clients with their issues</h2>
 
-  <p-button [routerLink]="['tickets/create']">Submit a Ticket</p-button>
+  <div class="main-btn">
+    <button (click)="onCreate()" pButton>Submit a Ticket</button>
+  </div>
 
-  <p>If you encounter any difficulties or have questions about our services,
-    our support team is available 24/7 to assist you</p>
-  <p>Additionally, we offer a comprehensive knowledge base and FAQs
-    section on our website to help address common concerns</p>
 
-  <br><br><br><br>
+  <p-dialog header="You have to be authorized to create a ticket"
+            [(visible)]="display"
+            position="top">
+    <p>Please <a routerLink="/login">LogIn</a> or <a routerLink="/signup">SignUp</a> if you don't have an account
+      already</p>
+  </p-dialog>
+
+
+  <div class="additional-content">
+
+    <div class="additional-content-text">
+    <p>If you encounter any difficulties or have questions about our services,
+      our support team is available 24/7 to assist you</p>
+    <p>Additionally, we offer a comprehensive knowledge base and FAQs
+      section on our website to help address common concerns</p>
+    </div>
+
+    <div class="logo">
+      <img ngSrc="/assets/logo.svg" alt="Logo" height="200" width="200" priority>
+    </div>
+  </div>
+
 
 </main>
-
