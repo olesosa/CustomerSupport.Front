@@ -1,0 +1,57 @@
+@import "../../../shared/styles/variables";
+@import "../../../shared/styles/mixins";
+
+.ticket-view {
+  font-size: 1.2rem;
+  margin-left: 5%;
+  margin-right: 5%;
+  padding-top: 5vh;
+  min-height: 75vh;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+
+  .ticket-options {
+    display: flex;
+    flex-direction: column;
+
+    .ticket-element-admin {
+      display: flex;
+      flex-direction: column;
+
+      button {
+        margin: 10px;
+      }
+    }
+
+    .ticket-element {
+      .ticket-options-checkbox {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        margin: 15px;
+      }
+      button {
+        margin: 15px;
+      }
+
+      .link {
+        color: $accent-color;
+        cursor: pointer;
+      }
+    }
+
+  }
+
+  .ticket-info {
+    display: flex;
+    flex-direction: column;
+
+
+    .ticket-element{
+      label{
+        color: $accent-color;
+      }
+    }
+  }
+}

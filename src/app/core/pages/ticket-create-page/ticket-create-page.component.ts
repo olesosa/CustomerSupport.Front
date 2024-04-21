@@ -1,33 +1,69 @@
-import {Component} from '@angular/core';
+import {Component, OnDestroy} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {MessageService} from "primeng/api";
+import {TicketService} from "../../../shared/services/ticket.service";
+import {TicketCreate} from "../../../shared/interfaces/ticket-create";
+import {catchError, of, Subject, switchMap, takeUntil} from "rxjs";
+import {Router} from "@angular/router";
+import {ConstVariables} from "../../../const-variables";
+import {getRequestTypeValue} from "../../../shared/helpers/mapper";
+import {AttachmentService} from "../../../shared/services/attachment.service";
 import {FileUploadEvent} from "primeng/fileupload";
 
 @Component({
   selector: 'app-ticket-create-page',
   templateUrl: './ticket-create-page.component.html',
   styleUrl: './ticket-create-page.component.scss',
-  providers: [MessageService]
 })
 
-export class TicketCreatePageComponent {
+export class TicketCreatePageComponent implements OnDestroy {
 
-  constructor(private messageService: MessageService) {
+  private readonly destroy$ = new Subject<void>()
+  requestTypes = ConstVariables.requestTypes
+
+  constructor(private readonly ticketService: TicketService,
+              private readonly attachmentService: AttachmentService,
+              private readonly router: Router) {
   }
 
   ticketCreateForm = new FormGroup({
     requestType: new FormControl('', Validators.required),
-    topic: new FormControl('', Validators.required),
-    description: new FormControl('', Validators.required),
+    topic: new FormControl('', [Validators.required]),
+    description: new FormControl('', Validators.required)
   });
 
   onSubmit() {
-    console.log(this.ticketCreateForm.value.requestType,
-      this.ticketCreateForm.value.topic,
-      this.ticketCreateForm.value.description);
+    const ticket: TicketCreate = {
+      requestType: getRequestTypeValue(this.ticketCreateForm.value.requestType!)!,
+      topic: this.ticketCreateForm.value.topic!,
+      description: this.ticketCreateForm.value.description!
+    }
+
+    this.ticketService.create(ticket)
+      .pipe(
+        takeUntil(this.destroy$),
+        catchError((error) => of(error)),
+        switchMap(ticket => {
+
+          return this.attachmentService.postTicket(this.filesToUpload, ticket.id)
+        })
+      )
+      .subscribe({
+        next: (res) => {
+          console.log(res)
+          this.router.navigateByUrl('/tickets')
+        },
+        error: err => console.log(err)
+      })
   }
 
-  onUpload(event: FileUploadEvent) {
-    this.messageService.add({severity: 'info', summary: 'Success', detail: 'File Uploaded with Basic Mode'});
+  private filesToUpload: File[] = []
+
+  onAttachmentUpload(event: any) {
+    this.filesToUpload = event.target.files
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }
