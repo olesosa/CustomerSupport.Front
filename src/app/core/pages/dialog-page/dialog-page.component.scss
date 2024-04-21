@@ -1,2 +1,68 @@
 @import "../../../shared/styles/variables";
 @import "../../../shared/styles/mixins";
+
+.dialog-page {
+  display: flex;
+  min-height: 75vh;
+  flex-direction: row;
+  margin-left: 5%;
+
+  .dialogs-list {
+    display: flex;
+    flex-direction: column;
+    width: 20%;
+    margin: 10px;
+    border-radius: 20px;
+    background-color: darken($background-color, 4);
+
+    .dialog-item {
+      height: auto;
+      margin: 10px;
+      padding: 5px;
+      border-radius: 15px;
+      background-color: $background-color;
+      cursor: pointer;
+      transition: background-color 0.5s ease;
+    }
+
+    .dialog-item:hover {
+      background-color: $accent-color;
+    }
+  }
+
+  .dialog-hub {
+    flex-direction: column;
+    width: 70%;
+    padding: 30px;
+    background-color: darken($background-color, 4);
+    border-radius: 30px;
+    margin: 10px;
+
+    .message-list {
+      min-height: 50vh;
+
+      .message {
+
+      }
+    }
+
+    .send-message {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+
+      input {
+        border-radius: 20px;
+        width: 85%;
+      }
+
+      button {
+        border-radius: 20px;
+      }
+
+      i {
+        font-size: 1.4rem;
+      }
+    }
+  }
+}

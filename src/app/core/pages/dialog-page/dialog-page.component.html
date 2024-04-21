@@ -1,19 +1,34 @@
-<div class="card">
-  <p-carousel [value]="products" [numVisible]="3" [numScroll]="3" [circular]="false">
-    <ng-template let-product pTemplate="item">
-      <div class="border-1 surface-border border-round m-2 text-center py-5 px-3">
-        <div class="mb-3">
-          <img src="https://primefaces.org/cdn/primeng/images/demo/product/{{ product.image }}" [alt]="product.name" class="w-6 shadow-2" />
-        </div>
-        <div>
-          <h4 class="mb-1">{{ product.name }}</h4>
-          <h6 class="mt-0 mb-3">{{ '$' + product.price }}</h6>
-          <div class="mt-5 flex align-items-center justify-content-center gap-2">
-            <p-button icon="pi pi-search" [rounded]="true" />
-            <p-button icon="pi pi-star-fill" [rounded]="true" severity="secondary" />
-          </div>
-        </div>
+<div class="dialog-page">
+
+  <div class="dialogs-list">
+    <div class="dialog-item" (click)="onChooseDialog(dialog.id)" *ngFor="let dialog of dialogs">
+      <p>{{ dialog.lastMassage }}</p>
+    </div>
+  </div>
+
+  <div class="dialog-hub">
+
+    <p-scroller [itemSize]="10">
+      <div class="dialog-ticket" *ngIf="isDialogSelected">
+        <p routerLink="/tickets/{{currentDialog.ticket.id}}">Ticket</p>
       </div>
-    </ng-template>
-  </p-carousel>
+
+      <div class="message-list" *ngIf="isDialogSelected">
+
+        <div class="message" *ngFor="let message of currentDialogMessages">
+          <p>{{ message.text }} from {{ message.userName }}</p>
+        </div>
+
+      </div>
+    </p-scroller>
+
+
+    <div class="send-message">
+      <input pInputText type="text" [(ngModel)]="currentMessageText" (keyup)="onKeyUp($event)"/>
+      <button (click)="sendMessage()" pButton><i class="pi pi-plus"></i></button>
+      <button (click)="addAttachment()" pButton><i class="pi pi-send"></i></button>
+    </div>
+
+  </div>
+
 </div>
