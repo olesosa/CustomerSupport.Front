@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import {SignupPageComponent} from "./signup-page.component";
 import {SharedModule} from "../../../shared/modules/shared.module";
 import {RouterModule, Routes} from "@angular/router";
-import {CoreModule} from "../../../shared/modules/core.module";
+import {CoreModule} from "../../components/core.module";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 
 const routes: Routes = [
@@ -19,11 +19,10 @@ const routes: Routes = [
   ],
     imports: [
         CommonModule,
-        SharedModule,
-        CoreModule,
         RouterModule.forChild(routes),
         FormsModule,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        SharedModule
     ],
   exports:[
     RouterModule

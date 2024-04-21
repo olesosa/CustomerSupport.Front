@@ -1,19 +1,21 @@
-<app-header></app-header>
-
 <form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
   <h1>Sign Up</h1>
 
   <label for="name">Name</label>
-  <input id="name" type="text" formControlName="email" pInputText>
+  <input id="name" type="text" formControlName="name" pInputText>
 
   <label for="email">Email</label>
   <input id="email" type="email" formControlName="email" pInputText>
 
   <label for="password">Password</label>
-  <input id="password" type="text" formControlName="password" pInputText>
+  <input id="password" type="password" formControlName="password" pInputText>
 
-  <button type="submit" [disabled]="!signupForm.valid" pButton>Submit</button>
+  <label for="confirmPassword">Confirm Password</label>
+  <input id="confirmPassword" type="password" formControlName="confirmPassword" pInputText>
 
+  <button type="submit" [disabled]="!signupForm.valid" pButton>Sign Up</button>
+
+  <div class="spinner" *ngIf="spinnerActive">
+    <p-progressSpinner></p-progressSpinner>
+  </div>
 </form>
-
-<app-footer></app-footer>

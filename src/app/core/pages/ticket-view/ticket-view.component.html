@@ -1,0 +1,85 @@
+<div class="ticket-view" *ngIf="ticket$ | async as ticket">
+
+  <div class="ticket-options">
+
+    <div class="ticket-element">
+      <p>Ticket Number: {{ ticket.number }}</p>
+    </div>
+
+    <div class="ticket-element">
+      <p>Date: {{ ticket.creationTime | date: 'dd/MM/yyyy' }}</p>
+    </div>
+
+    <div class="ticket-element" *ngIf="ticket.attachmentIds.length !== 0">
+      <p class="link" (click)="downloadAttachment(ticket)">Download Attachments</p>
+    </div>
+
+    <div class="ticket-element" *ngIf="ticket.attachmentIds.length === 0">
+      <p>No Attachments</p>
+    </div>
+
+    <div class="ticket-element" *ngIf="!isAdmin">
+      <div class="ticket-options-checkbox">
+        <label for="solve">Solved</label>
+        <p-checkbox id="solve"
+                    [(ngModel)]="ticket.isSolved"
+                    (onChange)="editTicket('solve', ticket)"
+                    [binary]="true"
+        ></p-checkbox>
+      </div>
+
+      <div class="ticket-options-checkbox">
+        <label for="close">Closed</label>
+        <p-checkbox id="close"
+                    [(ngModel)]="ticket.isClosed"
+                    (onChange)="editTicket('close', ticket)"
+                    [binary]="true"
+        ></p-checkbox>
+      </div>
+    </div>
+
+    <div class="ticket-element-admin" *ngIf="isAdmin">
+      <button *ngIf="isAdmin"
+              (click)="onCreateDialog(ticket.id)"
+              pButton>Start Dialog
+      </button>
+
+      <button *ngIf="isAdmin"
+              (click)="editTicket('assign', ticket)"
+              [disabled]="ticket.isAssigned"
+              pButton>Assign Ticket
+      </button>
+
+      <button *ngIf="!isAdmin"
+              (click)="reassignTicket(ticket)"
+              [hidden]="ticket.isAssigned"
+              pButton>ReAssign Ticket
+      </button>
+    </div>
+
+  </div>
+
+  <div class="ticket-info">
+
+    <div class="ticket-element">
+      <label for="requestType">Request Type</label>
+      <p id="requestType">{{ getRequestTypeName(ticket.requestType) }}</p>
+    </div>
+
+    <div class="ticket-element">
+      <label for="topic">Topic</label>
+      <p id="topic">{{ ticket.topic }}</p>
+    </div>
+
+    <div class="ticket-element">
+      <label for="description">Description</label>
+      <p id="description">{{ ticket.description }}</p>
+    </div>
+
+  </div>
+
+  <div class="attachments">
+
+  </div>
+
+</div>

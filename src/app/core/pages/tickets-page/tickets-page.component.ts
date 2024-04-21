@@ -1,48 +1,50 @@
-import {Component, OnInit} from '@angular/core';
-import {TicketShortinfo} from "../../interfaces/ticket-shortinfo";
-import {TicketFullinfo} from "../../interfaces/ticket-fullinfo";
-import { TicketService } from '../../services/ticket.service';
+import {Component, OnDestroy} from '@angular/core';
+import {TicketService} from '../../services/ticket.service';
+import {Filter} from "../../../shared/interfaces/filter";
+import {catchError, of, Subject, takeUntil} from "rxjs";
+import {TableLazyLoadEvent} from "primeng/table";
+import {TicketShortinfo} from "../../../shared/interfaces/ticket-shortinfo";
+import {error} from "@angular/compiler-cli/src/transformers/util";
 
 @Component({
   selector: 'app-tickets-page',
   templateUrl: './tickets-page.component.html',
   styleUrl: './tickets-page.component.scss'
 })
-export class TicketsPageComponent implements OnInit {
-  tickets!: TicketShortinfo[];
-  sortField!: string;
-  sortOptions!: object[];
-  sortOrder!: number;
+export class TicketsPageComponent implements OnDestroy {
 
-  constructor(private service: TicketService) { }
 
-  ngOnInit(): void {
-
-    // this.service.getFullInfo('eb2c6e4f-6654-416b-8220-86d6e3914373')
-    //   .subscribe((ticket: TicketFullinfo) => console.log(ticket));
-
-    // this.service.getAll().subscribe((tickets : TicketShortinfo[]) =>
-    //   console.log(tickets));
-
-    this.tickets = this.service.getFakeTickets();
-
-    this.sortOptions = [
-      { label: 'Number High to Low', value: '!number' },
-      { label: 'Number Low to High', value: 'number' }
-      ];
+  private readonly destroy$ = new Subject<void>();
+  tickets: TicketShortinfo[] = [];
+  totalRecords!: number;
+  private readonly filer: Filter = {
+    PageNumber: 0,
+    PageSize: 5
   }
 
-  onSortChange(event: any) {
-    let value = event.value;
-
-    if (value.indexOf('!') === 0) {
-      this.sortOrder = -1;
-      this.sortField = value.substring(1, value.length);
-    }
-    else {
-      this.sortOrder = 1;
-      this.sortField = value;
-    }
+  constructor(private readonly ticketService: TicketService) {
   }
 
+  loadTickets($event: TableLazyLoadEvent) {
+
+    this.filer.PageNumber = $event.first || 0;
+    this.filer.PageSize = $event.rows || 5;
+    this.filer.SortDir = $event.sortOrder || 1 ? 'asc' : 'desc';
+    this.filer.Number = !!($event.sortField?.toString || 'Number');
+
+    this.ticketService.getAll(this.filer)
+      .pipe(
+        takeUntil(this.destroy$),
+        catchError(error => of(error))
+      )
+      .subscribe({
+        next: (tickets) => this.tickets = tickets.data,
+        error: (error) => console.log(error)
+      })
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 }

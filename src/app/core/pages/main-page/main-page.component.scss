@@ -2,20 +2,56 @@
 @import "../../../shared/styles/mixins";
 
 main {
-  padding: 30px;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
-  height: 75%;
+  min-height: 75vh;
+  padding: 30px;
 
   h1 {
-    color: $secondary-color;
+    color: $accent-color;
   }
 
-    p-button {
+  .main-btn{
+    display: flex;
+    justify-content: center;
+
+    button {
       display: flex;
       justify-content: center;
-      margin: 50px 10px 50px 10px;
+      padding: 10px 25px;
+      margin: 30px;
+      border-radius: 10px;
     }
+  }
+
+  a {
+    @include router-link-text;
+    font-weight: bold;
+    color: $accent-color;
+  }
+
+  .additional-content{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    .additional-content-text{
+      display: flex;
+      flex-direction: column;
+    }
+
+    .logo{
+      display: flex;
+      justify-content: right;
+    }
+
+    //@media (max-width: 1025px){
+    //  .logo{
+    //    display: none;
+    //  }
+    //}
+  }
+
 
 }

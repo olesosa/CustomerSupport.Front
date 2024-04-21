@@ -1,9 +1,10 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {CommonModule, NgOptimizedImage} from '@angular/common';
 import { MainPageComponent } from "./main-page.component";
 import { SharedModule } from "../../../shared/modules/shared.module";
 import { RouterModule, Routes } from '@angular/router';
-import {CoreModule} from "../../../shared/modules/core.module";
+import {DialogModule} from "primeng/dialog";
+import {MessagesModule} from "primeng/messages";
 
 const routes: Routes = [
   {
@@ -16,12 +17,14 @@ const routes: Routes = [
   declarations: [
     MainPageComponent
   ],
-  imports: [
-    CommonModule,
-    SharedModule,
-    CoreModule,
-    RouterModule.forChild(routes)
-  ],
+    imports: [
+        CommonModule,
+        RouterModule.forChild(routes),
+        DialogModule,
+        MessagesModule,
+        NgOptimizedImage,
+        SharedModule
+    ],
   exports: [
     RouterModule
   ],

@@ -1,27 +1,26 @@
-<app-header></app-header>
-
 <form [formGroup]="ticketCreateForm" (ngSubmit)="onSubmit()">
   <h1>Submit a Ticket</h1>
 
-  <label>Choose request type</label>
-  <p-dropdown id="requestType" formControlName="requestType" placeholder="Request type"></p-dropdown>
+  <label for="requestType">Choose request type</label>
+  <p-dropdown id="requestType" [options]="requestTypes" formControlName="requestType" placeholder="Request type"></p-dropdown>
 
   <label for="topic">Topic</label>
   <input id="topic" type="text" formControlName="topic" pInputText>
 
   <label for="description">Description</label>
-  <textarea id="description" formControlName="description" rows="5" cols="30" pInputTextarea
+  <textarea id="description"
+            formControlName="description"
+            rows="4"
+            cols="30" pInputTextarea
+            style="overflow: auto;"
             [autoResize]="true"></textarea>
 
-  <p-fileUpload mode="basic"
-                chooseLabel="Choose"
-                name="demo[]"
-                url="https://www.primefaces.org/cdn/api/upload.php"
-                accept="image/*"
-                (onUpload)="onUpload($event)"></p-fileUpload>
+  <p-button>
+    <i class="pi pi-upload" (click)="attach.click()">
+      <input type="file" multiple hidden #attach (change)="onAttachmentUpload($event)"/>
+    </i>
+  </p-button>
 
   <button type="submit" [disabled]="!ticketCreateForm.valid" pButton>Submit</button>
 
 </form>
-
-<app-footer></app-footer>

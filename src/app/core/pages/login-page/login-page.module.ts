@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import {LoginPageComponent} from "./login-page.component";
 import {SharedModule} from "../../../shared/modules/shared.module";
 import {RouterModule, Routes} from "@angular/router";
-import {CoreModule} from "../../../shared/modules/core.module";
 import {ReactiveFormsModule} from "@angular/forms";
 
 const routes: Routes = [
@@ -17,13 +16,12 @@ const routes: Routes = [
   declarations: [
     LoginPageComponent
   ],
-  imports: [
-    CommonModule,
-    SharedModule,
-    CoreModule,
-    RouterModule.forChild(routes),
-    ReactiveFormsModule
-  ],
+    imports: [
+        CommonModule,
+        RouterModule.forChild(routes),
+        ReactiveFormsModule,
+        SharedModule
+    ],
   exports:[
     RouterModule
   ]

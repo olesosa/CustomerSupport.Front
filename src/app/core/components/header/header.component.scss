@@ -1,0 +1,57 @@
+@import "../../../shared/styles/variables";
+@import "../../../shared/styles/mixins";
+@import "primeicons/primeicons.css";
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  background-color: $base-color;
+  border-bottom-left-radius: 30px;
+  border-bottom-right-radius: 30px;
+  height: 12.5vh;
+
+  .header-btn {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    button {
+      @include btn-white();
+    }
+  }
+
+  a {
+    @include router-link-text;
+    font-size: 25px;
+  }
+
+  .header-icons {
+    padding: 3px;
+    cursor: pointer;
+  }
+
+  .desktop{
+    display: block;
+  }
+
+  .mobile{
+    display: none;
+  }
+
+  @media (max-width: 426px){
+    .desktop{
+      display: none
+    }
+    .mobile{
+      display: block;
+    }
+  }
+}
+
+.dialog-btn{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}

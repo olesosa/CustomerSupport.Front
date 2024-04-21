@@ -2,11 +2,28 @@
 @import "app/shared/styles/mixins";
 
 html, body {
-  height: 100%;
+  min-height: 100%;
 }
+
 body {
   margin: 0;
   padding: 0;
   font-family: $base-font;
-  background-color: $background-color
+  background-color: $background-color;
+
+  .content{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 100vh;
+  }
+
+}
+
+.spinner {
+  @include spinner()
+}
+
+.spinner:before {
+  @include spinner-before()
 }

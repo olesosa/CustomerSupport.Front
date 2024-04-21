@@ -1,5 +1,3 @@
-<app-header></app-header>
-
 <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
 
   <h1>Log In</h1>
@@ -10,7 +8,10 @@
   <label for="password">Password</label>
   <input id="password" type="password" formControlName="password" pInputText>
 
-  <button type="submit" [disabled]="!loginForm.valid" pButton>Submit</button>
+  <button type="submit" [disabled]="!loginForm.valid || buttonLock" pButton>Log In</button>
+
+  <div class="spinner" *ngIf="spinnerActive">
+    <p-progressSpinner></p-progressSpinner>
+  </div>
 </form>
 
-<app-footer></app-footer>

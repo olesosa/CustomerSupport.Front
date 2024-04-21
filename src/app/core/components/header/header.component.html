@@ -1,0 +1,24 @@
+<header>
+  <h2 class="header-main desktop"><a routerLink='/'>Always There Business</a></h2>
+  <h2 class="header-main mobile"><a routerLink='/'>ATB</a></h2>
+
+  <div class="header-btn" *ngIf="!isAuthorized">
+    <button [routerLink]="['/login']" pButton>Log In</button>
+    <button [routerLink]="['/signup']" pButton>Sign Up</button>
+  </div>
+
+  <div class="header-btn" *ngIf="isAuthorized">
+    <button [routerLink]="['/tickets']" pButton>Tickets</button>
+    <button [routerLink]="['/dialogs']" pButton>Dialogs</button>
+    <button (click)="display=true" pButton><i class="header-icons pi pi-sign-out"></i></button>
+  </div>
+
+</header>
+
+<p-dialog header="Log Out" [(visible)]="display" position="top">
+  <p>Are you sure you want yo log out</p>
+  <div class="dialog-btn">
+    <button (click)="onLogOut()" pButton>Ok</button>
+    <button (click)="display=false" pButton>Cancel</button>
+  </div>
+</p-dialog>
