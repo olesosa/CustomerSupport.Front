@@ -1,5 +1,7 @@
+import {RequestTypes} from "../enums/request-types";
+
 export interface TicketCreate {
-  requestType: string;
+  requestType: RequestTypes;
   topic: string;
   description: string;
 }

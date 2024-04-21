@@ -1,6 +1,8 @@
+import {RequestTypes} from "../enums/request-types";
+
 export interface TicketShortinfo {
   id:string;
   number:number;
-  requestType:string;
+  requestType:RequestTypes;
   topic:string;
 }
