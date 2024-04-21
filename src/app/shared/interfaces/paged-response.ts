@@ -1,7 +1,5 @@
-import {TicketShortinfo} from "./ticket-shortinfo";
-
-export interface PagedResponse {
-  data: TicketShortinfo[];
+export interface PagedResponse<T> {
+  data: T;
   pageNumber: number;
   pageSize: number;
   totalRecords: number;

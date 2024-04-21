@@ -5,8 +5,8 @@ import {SharedModule} from "../../../shared/modules/shared.module";
 import {RouterModule, Routes} from "@angular/router";
 import {TableModule} from "primeng/table";
 import {PaginatorModule} from "primeng/paginator";
-import {HttpClientModule} from "@angular/common/http";
 import {MultiSelectModule} from "primeng/multiselect";
+import {ReactiveFormsModule} from "@angular/forms";
 
 const routes: Routes = [
   {
@@ -21,12 +21,12 @@ const routes: Routes = [
   ],
     imports: [
         CommonModule,
-        SharedModule,
         RouterModule.forChild(routes),
         TableModule,
         PaginatorModule,
-        HttpClientModule,
-        MultiSelectModule
+        MultiSelectModule,
+        ReactiveFormsModule,
+        SharedModule,
     ],
   exports:[
     RouterModule

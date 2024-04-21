@@ -17,13 +17,13 @@ const routes: Routes = [
   declarations: [
     DialogPageComponent
   ],
-    imports: [
-        CommonModule,
-        SharedModule,
-        RouterModule.forChild(routes),
-        CarouselModule,
-        FormsModule
-    ],
+  imports: [
+    CommonModule,
+    RouterModule.forChild(routes),
+    CarouselModule,
+    FormsModule,
+    SharedModule
+  ],
   exports: [
     RouterModule
   ]

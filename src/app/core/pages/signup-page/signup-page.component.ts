@@ -1,6 +1,6 @@
 import {Component, OnDestroy} from '@angular/core';
 import {AbstractControl, FormControl, FormGroup, ValidatorFn, Validators} from "@angular/forms";
-import {UserService} from "../../services/user.service";
+import {UserService} from "../../../shared/services/user.service";
 import {ConstVariables} from "../../../const-variables";
 import {catchError, finalize, of, Subject, takeUntil} from "rxjs";
 import {UserSignup} from "../../../shared/interfaces/user-signup";
@@ -15,14 +15,10 @@ import {HttpErrorResponse} from "@angular/common/http";
 })
 export class SignupPageComponent implements OnDestroy {
 
-  private readonly destroy$ = new Subject<void>();
-  private readonly user: UserSignup = {
-    username: '',
-    email: '',
-    password: ''
-  };
-  private spinner: boolean = false;
-  private buttonLock: boolean = false;
+  private readonly destroy$ = new Subject<void>()
+
+  buttonLock: boolean = false;
+  spinnerActive: boolean = false;
 
   constructor(private readonly userService: UserService,
               private readonly router: Router) {
@@ -47,21 +43,25 @@ export class SignupPageComponent implements OnDestroy {
 
   onSubmit() {
 
-    this.user.username = this.signupForm.value.name!;
-    this.user.email = this.signupForm.value.email!;
-    this.user.password = this.signupForm.value.password!;
+    this.spinnerActive = true
 
-    this.userService.signUp(this.user)
+    const user: UserSignup = {
+      username:this.signupForm.value.name!,
+      email: this.signupForm.value.email!,
+      password: this.signupForm.value.password!
+    }
+
+    this.userService.signUp(user)
       .pipe(
         takeUntil(this.destroy$),
         catchError(error => of(error)),
         finalize(() => {
-          this.spinner = false;
           this.buttonLock = false;
+          this.spinnerActive = false
         })
       )
       .subscribe({
-        next: () => this.router.navigate(['']),
+        next: () => this.router.navigate(['/login']),
         error: (error) => console.log(error)
       });
   }

@@ -1,10 +1,10 @@
 import {Injectable} from '@angular/core';
-import {TokenInfo} from "../../shared/interfaces/token-info";
+import {TokenInfo} from "../interfaces/token-info";
 
 @Injectable({
   providedIn: 'root'
 })
-export class StorageService {
+export class TokenService {
 
   private readonly token = 'token';
   private readonly refreshToken = 'refreshToken';
@@ -31,7 +31,6 @@ export class StorageService {
     }
 
     return token;
-
   }
 
   public removeToken() {
@@ -39,4 +38,8 @@ export class StorageService {
     localStorage.removeItem(this.refreshToken);
   }
 
+  public isAuthorized(): boolean {
+
+    return this.getToken().token != '' || this.getToken().refreshToken != '';
+  }
 }

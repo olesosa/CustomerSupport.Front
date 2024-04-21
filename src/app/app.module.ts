@@ -4,8 +4,10 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import {SharedModule} from "./shared/modules/shared.module";
 import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
-import {CoreModule} from "./shared/modules/core.module";
+import {CoreModule} from "./core/components/core.module";
 import {AuthInterceptor} from "./core/interceptors/auth.interceptor";
+import {provideAnimations} from "@angular/platform-browser/animations";
+import { AdminPageComponent } from './core/pages/admin-page/admin-page.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +25,8 @@ import {AuthInterceptor} from "./core/interceptors/auth.interceptor";
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
       multi: true
-    }
+    },
+    provideAnimations()
   ],
   exports: [],
   bootstrap: [AppComponent]

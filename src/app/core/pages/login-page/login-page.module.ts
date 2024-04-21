@@ -16,12 +16,12 @@ const routes: Routes = [
   declarations: [
     LoginPageComponent
   ],
-  imports: [
-    CommonModule,
-    SharedModule,
-    RouterModule.forChild(routes),
-    ReactiveFormsModule
-  ],
+    imports: [
+        CommonModule,
+        RouterModule.forChild(routes),
+        ReactiveFormsModule,
+        SharedModule
+    ],
   exports:[
     RouterModule
   ]

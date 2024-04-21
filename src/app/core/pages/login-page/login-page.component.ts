@@ -1,12 +1,10 @@
 import {Component, OnDestroy} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {UserService} from "../../services/user.service";
+import {UserService} from "../../../shared/services/user.service";
 import {UserLogin} from "../../../shared/interfaces/user-login";
-import {catchError, finalize, of, Subject, switchMap, takeUntil, throwError} from "rxjs";
+import {catchError, finalize, of, Subject, switchMap, takeUntil} from "rxjs";
 import {ConstVariables} from "../../../const-variables";
-import {StorageService} from "../../services/storage.service";
-import {HttpErrorResponse} from "@angular/common/http";
-import {TokenInfo} from "../../../shared/interfaces/token-info";
+import {TokenService} from "../../../shared/services/token.service";
 import {Router} from "@angular/router";
 import {MessageService} from "primeng/api";
 
@@ -23,13 +21,12 @@ export class LoginPageComponent implements OnDestroy {
     email: '',
     password: ''
   };
-  private spinner: boolean = false;
-  private buttonLock: boolean = false;
+  buttonLock: boolean = false;
+  spinnerActive: boolean = false;
 
   constructor(private readonly userService: UserService,
-              private readonly storageService: StorageService,
-              private readonly router: Router,
-              private readonly messageService: MessageService) {
+              private readonly storageService: TokenService,
+              private readonly router: Router) {
   }
 
   loginForm = new FormGroup({
@@ -43,71 +40,32 @@ export class LoginPageComponent implements OnDestroy {
     this.user.email = this.loginForm.value.email!;
     this.user.password = this.loginForm.value.password!;
 
-    this.spinner = true;
     this.buttonLock = true;
+    this.spinnerActive = true
 
     this.userService.logIn(this.user)
       .pipe(
-        switchMap((token: TokenInfo) => {
+        takeUntil(this.destroy$),
+        catchError(error => of(error)),
+        switchMap(token => {
           this.storageService.setToken(token)
           return this.userService.GetUser()
             .pipe(
+              takeUntil(this.destroy$),
               catchError(error => of(error)),
               finalize(() => {
-                this.spinner = false;
-                this.buttonLock = false;
+                this.buttonLock = false
+                this.spinnerActive = false
               })
             )
-        }),
-        finalize(() => {
-          this.spinner = false;
-          this.buttonLock = false;
         })
       )
       .subscribe({
-        next: () => this.router.navigateByUrl(''),
-        error: error => this.handleError(error)
-      });
-  }
+        next: () => this.router.navigateByUrl('/').then(() => window.location.reload()),
+        error: error => console.log(error)
+      })
 
-  private handleError(error: HttpErrorResponse) {
-    if (error.status === 404) {
-      this.CreateUser();
-    } else if (error.status === 401) {
-      this.messageService.add({
-        severity: 'error',
-        summary: 'Error!',
-        detail: 'User doesnt exist',
-        life: 3000
-      })
-    } else if (error.status === 500) {
-      this.messageService.add({
-        severity: 'error',
-        summary: 'Error!',
-        detail: `Internal server error`,
-        life: 3000
-      })
-    } else if (error.status === 400) {
-      this.messageService.add({
-        severity: 'error',
-        summary: 'Error!',
-        detail: `Bad request`,
-        life: 3000
-      })
-    } else {
-      console.log(error.status, error)
-    }
-  }
 
-  private CreateUser() {
-    this.userService.signUpApi()
-      .pipe(
-        catchError(error => of(error))
-      )
-      .subscribe({
-        next: () => this.router.navigateByUrl(''),
-        error: (error) => this.handleError(error)
-      })
   }
 
   ngOnDestroy() {
