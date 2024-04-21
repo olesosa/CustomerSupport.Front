@@ -1,0 +1,14 @@
+@import "../../../shared/styles/variables";
+@import "../../../shared/styles/mixins";
+
+div{
+  @include main-content();
+
+  font-size: 2rem;
+  color: rgba(211, 211, 211, 0.5);
+
+  h2{
+    @include router-link-text()
+  }
+}
+
