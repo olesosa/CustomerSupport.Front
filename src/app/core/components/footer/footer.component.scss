@@ -1,0 +1,17 @@
+@import "../../../shared/styles/variables";
+@import "../../../shared/styles/mixins";
+
+footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  background-color: $base-color;
+  border-top-left-radius: 30px;
+  border-top-right-radius: 30px;
+  height: 12.5vh;
+
+  h2 {
+    font-size: 20px;
+  }
+}

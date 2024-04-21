@@ -13,7 +13,9 @@
   <label for="confirmPassword">Confirm Password</label>
   <input id="confirmPassword" type="password" formControlName="confirmPassword" pInputText>
 
-  <button type="submit" [disabled]="!signupForm.valid" pButton>Submit</button>
+  <button type="submit" [disabled]="!signupForm.valid" pButton>Sign Up</button>
+
+  <div class="spinner" *ngIf="spinnerActive">
+    <p-progressSpinner></p-progressSpinner>
+  </div>
 </form>
-
-
