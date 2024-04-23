@@ -29,14 +29,19 @@ export class AttachmentService {
     return this.http.get(this.apiUrl + `/ticket/${attachmentId}`, {responseType: 'blob'});
   }
 
-  public postMessage(file: File, messageId: string): Observable<string> {
+  public postMessage(files: File[], messageId: string): Observable<string> {
 
-    const formData: FormData = new FormData()
-    formData.append('file', file)
-    return this.http.post<string>(this.apiUrl + `/messages/${messageId}`, formData)
+    const formData = new FormData()
+
+    for (let file of files) {
+      formData.append('files', file)
+    }
+
+    return this.http.post<string>(this.apiUrl + `/message/${messageId}`, formData)
   }
 
   public getMessage(messageId: string) {
-    return this.http.get(this.apiUrl + `/${messageId}`, {responseType: 'blob'});
+
+    return this.http.get(this.apiUrl + `/message/${messageId}`, {responseType: 'blob'});
   }
 }

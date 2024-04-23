@@ -8,6 +8,8 @@ import {TicketCreate} from "../interfaces/ticket-create";
 import {TicketFilter} from "../interfaces/ticket-filter";
 import {PagedResponse} from "../interfaces/paged-response";
 import {TicketPatch} from "../interfaces/ticket-patch";
+import {Statistic} from "../interfaces/statistic";
+import {StatisticFilter} from "../interfaces/statistic-filter";
 
 @Injectable({
   providedIn: 'root'
@@ -25,7 +27,7 @@ export class TicketService {
       .set('Skip', filter.skip)
       .set('Take', filter.take);
 
-    if (filter.requestType) {
+    if (filter.requestType != null) {
       params = params.set('RequestType', filter.requestType);
     }
     if (filter.isAssigned != null) {
@@ -52,9 +54,9 @@ export class TicketService {
     return this.http.get<PagedResponse<TicketShortinfo[]>>(this.apiUrl, {params: params});
   }
 
-  public getFullInfo(ticketId: string): Observable<TicketFullinfo> {
+  public getFullInfo(number: string): Observable<TicketFullinfo> {
 
-    return this.http.get<TicketFullinfo>(this.apiUrl + `/${ticketId}`);
+    return this.http.get<TicketFullinfo>(this.apiUrl + `/${number}`);
   }
 
   public create(ticket: TicketCreate): Observable<TicketShortinfo> {
@@ -62,18 +64,46 @@ export class TicketService {
     return this.http.post<TicketShortinfo>(this.apiUrl, ticket);
   }
 
-  public assign(ticketId: string, adminId: string): Observable<TicketPatch> {
+  public getStatistic(filter: StatisticFilter): Observable<Statistic[]> {
 
-    return this.http.patch<TicketPatch>(this.apiUrl + '/Assign', {ticketId, adminId})
+    let params = new HttpParams()
+
+    if (filter.requestType != null) {
+      params = params.set('RequestType', filter.requestType);
+    }
+    if (filter.isAssigned != null) {
+      params = params.set('IsAssigned', filter.isAssigned);
+    }
+    if (filter.isSolved != null) {
+      params = params.set('IsSolved', filter.isSolved);
+    }
+    if (filter.isClosed != null) {
+      params = params.set('IsClosed', filter.isClosed);
+    }
+    if (filter.userId != null) {
+      params = params.set('UserId', filter.userId)
+    }
+
+    return this.http.get<Statistic[]>(this.apiUrl + '/Statistic', {params: params})
   }
 
-  public solve(ticketId: string): Observable<TicketPatch> {
+  public assign(ticketId: string): Observable<TicketPatch> {
 
-    return this.http.patch<TicketPatch>(this.apiUrl + `/Solve/${ticketId}`, {})
+    return this.http.patch<TicketPatch>(this.apiUrl + `/Assign/${ticketId}`, {})
   }
 
-  public close(ticketId: string): Observable<TicketPatch> {
+  public reassign(ticketId: string, adminId: string): Observable<TicketPatch> {
 
-    return this.http.patch<TicketPatch>(this.apiUrl + `/Close/${ticketId}`, {})
+    return this.http.patch<TicketPatch>(this.apiUrl + '/Reassign', {ticketId, adminId})
+  }
+
+  public receive(number: string): Observable<TicketPatch> {
+
+    return this.http.patch<TicketPatch>(this.apiUrl + `/Receive/${number}`, {})
+  }
+
+  public update(ticketId: string, isSolved: boolean, isClosed: boolean): Observable<TicketPatch> {
+
+    return this.http.put<TicketPatch>(this.apiUrl + `/${ticketId}`, {isSolved, isClosed})
   }
 }

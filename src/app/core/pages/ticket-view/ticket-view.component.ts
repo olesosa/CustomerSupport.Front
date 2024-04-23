@@ -2,12 +2,12 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {TicketFullinfo} from "../../../shared/interfaces/ticket-fullinfo";
 import {TicketService} from "../../../shared/services/ticket.service";
 import {ActivatedRoute, Router} from "@angular/router";
-import {catchError, concatWith, Observable, of, Subject, switchMap, takeUntil} from "rxjs";
+import {catchError, EMPTY, of, Subject, switchMap, takeUntil} from "rxjs";
 import {UserService} from "../../../shared/services/user.service";
 import {DialogService} from "../../../shared/services/dialog.service";
 import {getRequestTypeName} from "../../../shared/helpers/mapper";
 import {AttachmentService} from "../../../shared/services/attachment.service";
-import {dateTimestampProvider} from "rxjs/internal/scheduler/dateTimestampProvider";
+import {UserInfo} from "../../../shared/interfaces/user-info";
 
 @Component({
   selector: 'app-ticket-view',
@@ -17,8 +17,13 @@ import {dateTimestampProvider} from "rxjs/internal/scheduler/dateTimestampProvid
 export class TicketViewComponent implements OnInit, OnDestroy {
 
   private readonly destroy$ = new Subject<void>();
-  ticket$!: Observable<TicketFullinfo>
+  spinnerActive: boolean = false;
+  ticket!: TicketFullinfo
   isAdmin!: boolean
+  display: boolean = false
+
+  optionSolved!: boolean
+  optionClosed!: boolean
 
   constructor(private readonly ticketService: TicketService,
               private readonly route: ActivatedRoute,
@@ -30,117 +35,99 @@ export class TicketViewComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
-      this.ticket$ = this.ticketService.getFullInfo(params['id'])
-    })
-
-    this.userService.GetUser()
-      .pipe(
-        takeUntil(this.destroy$),
-        catchError(err => of(err)),
-      )
-      .subscribe({
-        next: user => this.isAdmin = user?.roleName == 'Admin'
-      })
-  }
-
-  editTicket(prop: string, ticket: TicketFullinfo) {
-
-    switch (prop) {
-      case 'assign':
-        this.userService.GetUser()
-          .pipe(
-            takeUntil(this.destroy$),
-            catchError(err => of(err)),
-            switchMap(user => {
-              if (user.roleName !== 'Admin') {
-                throw new Error('403 access denied')
-              }
-
-              return this.ticketService.assign(ticket.id, user.id)
-            })
-          )
-          .subscribe({
-            next: result => console.log(result),
-            error: err => console.log(err)
-          })
-        break
-      case 'solve':
-        ticket.isSolved = !ticket.isSolved
-        this.ticketService.solve(ticket.id)
-          .pipe(
-            takeUntil(this.destroy$),
-            catchError(err => of(err))
-          )
-          .subscribe({
-            next: result => console.log(result),
-            error: err => console.log(err)
-          })
-        break
-      case 'close':
-        ticket.isClosed = !ticket.isClosed
-        this.ticketService.close(ticket.id)
-          .pipe(
-            takeUntil(this.destroy$),
-            catchError(err => of(err))
-          )
-          .subscribe({
-            next: result => console.log(result),
-            error: err => console.log(err)
-          })
-        break
-    }
-  }
-
-  onCreateDialog(ticketId: string) {
-
-    this.dialogService.create(ticketId)
-      .pipe(
-        takeUntil(this.destroy$),
-        catchError(err => of(err))
-      )
-      .subscribe({
-        next: () => this.router.navigateByUrl('/dialogs'),
-        error: err => console.log(err)
-      })
-  }
-
-  reassignTicket(ticket: TicketFullinfo) {
-
-  }
-
-
-  downloadAttachment(ticket: TicketFullinfo) {
-
-    console.log('--downloadAttachment')
-
-    for (const attachment of ticket.attachmentIds){
-
-      this.attachmentService.getTicket(attachment)
+      this.ticketService.getFullInfo(params['number'])
         .pipe(
           takeUntil(this.destroy$),
           catchError(err => of(err))
         )
         .subscribe({
-          next: response =>  {
-            console.log(response)
-
-            const newBlob = new Blob([response], { type: "application/octet-stream" });
-            const data = window.URL.createObjectURL(newBlob);
-            const link = document.createElement("a");
-            link.href = data;
-            // link.download = Math.floor(Math.random() * 1000).toString()
-            link.click();
-          },
-          error: err => console.log(err)
+          next: ticket => this.ticket = ticket,
+          error: () => this.router.navigateByUrl('404')
         })
-    }
+
+      this.userService.GetUser()
+        .pipe(
+          takeUntil(this.destroy$),
+          catchError(err => of(err)),
+          switchMap(user => {
+            this.isAdmin = user?.roleName == 'Admin'
+            if (this.isAdmin) {
+              return this.ticketService.receive(params['number'])
+                .pipe(
+                  takeUntil(this.destroy$)
+                )
+            }
+            return EMPTY
+          })
+        )
+        .subscribe()
+    })
   }
 
-  private getFileExtension(url: string): string {
-    const parts = url.split('/');
-    const fileName = parts[parts.length - 1];
-    const extensionParts = fileName.split('.');
-    return extensionParts[extensionParts.length - 1];
+  assignTicket() {
+    this.userService.GetUser()
+      .pipe(
+        takeUntil(this.destroy$),
+        catchError(err => of(err)),
+        switchMap(user => {
+          if (user.roleName !== 'Admin') {
+            throw new Error('403 access denied')
+          }
+          return this.ticketService.assign(this.ticket.id)
+            .pipe(
+              takeUntil(this.destroy$),
+              catchError(err => of(err)),
+              switchMap(() => {
+                return this.ticketService.getFullInfo(this.ticket.number.toString())
+                  .pipe(
+                    takeUntil(this.destroy$),
+                    catchError(err => of(err))
+                  )
+              })
+            )
+        })
+      )
+      .subscribe({
+        next: ticket => this.ticket = ticket,
+        error: err => console.log(err)
+      })
+  }
+
+  downloadAttachment(attachmentId: string) {
+
+    this.attachmentService.getTicket(attachmentId)
+      .pipe(
+        takeUntil(this.destroy$),
+        catchError(err => of(err))
+      )
+      .subscribe({
+        next: response => {
+          console.log(response)
+
+          const blob = new Blob([response], {type: response?.type.toString()});
+          const url = window.URL.createObjectURL(blob);
+          window.open(url);
+        },
+        error: err => console.log(err)
+      })
+  }
+
+  showDialog() {
+    this.display = true
+    this.optionSolved = this.ticket.isSolved
+    this.optionClosed = this.ticket.isClosed
+  }
+
+  closeDialog() {
+    this.display = false;
+
+    console.log('closeDialog')
+
+    this.ticketService.update(this.ticket.id, this.optionSolved, this.optionClosed)
+      .pipe(
+        takeUntil(this.destroy$)
+      )
+      .subscribe(() => window.location.reload())
   }
 
   ngOnDestroy(): void {

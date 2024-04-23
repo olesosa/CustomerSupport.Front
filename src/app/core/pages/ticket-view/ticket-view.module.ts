@@ -4,6 +4,9 @@ import {RouterModule, Routes} from "@angular/router";
 import {SharedModule} from "../../../shared/modules/shared.module";
 import {TicketViewComponent} from "./ticket-view.component";
 import {FormsModule} from "@angular/forms";
+import {CustomDatePipe} from "../../../shared/pipes/custom-date-pipe";
+import {DialogModule} from "primeng/dialog";
+import {InputSwitchModule} from "primeng/inputswitch";
 
 const routes: Routes = [
   {
@@ -16,12 +19,15 @@ const routes: Routes = [
   declarations: [
     TicketViewComponent
   ],
-    imports: [
-        CommonModule,
-        RouterModule.forChild(routes),
-        FormsModule,
-        SharedModule,
-    ],
+  imports: [
+    CommonModule,
+    RouterModule.forChild(routes),
+    FormsModule,
+    SharedModule,
+    CustomDatePipe,
+    DialogModule,
+    InputSwitchModule
+  ],
   exports: [
     RouterModule
   ],
