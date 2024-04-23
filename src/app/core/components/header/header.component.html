@@ -16,9 +16,13 @@
 </header>
 
 <p-dialog header="Log Out" [(visible)]="display" position="top">
-  <p>Are you sure you want yo log out</p>
+  <p>Are you sure you want to log out?</p>
   <div class="dialog-btn">
-    <button (click)="onLogOut()" pButton>Ok</button>
-    <button (click)="display=false" pButton>Cancel</button>
+    <button (click)="onLogOut()" pButton>
+      <i class="pi pi-check" style="font-size: 1.2rem"></i>
+    </button>
+    <button (click)="display=false" pButton>
+      <i class="pi pi-times" style="font-size: 1.2rem"></i>
+    </button>
   </div>
 </p-dialog>

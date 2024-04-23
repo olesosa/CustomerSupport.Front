@@ -5,6 +5,7 @@ import {SharedModule} from "../../../shared/modules/shared.module";
 import {RouterModule, Routes} from "@angular/router";
 import {CoreModule} from "../../components/core.module";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {DialogModule} from "primeng/dialog";
 
 const routes: Routes = [
   {
@@ -22,7 +23,8 @@ const routes: Routes = [
         RouterModule.forChild(routes),
         FormsModule,
         ReactiveFormsModule,
-        SharedModule
+        SharedModule,
+        DialogModule
     ],
   exports:[
     RouterModule
