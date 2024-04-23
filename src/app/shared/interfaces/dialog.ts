@@ -1,9 +1,9 @@
-import {ChatMessage} from "./chat-message";
 import {Message} from "./message";
 import {TicketFullinfo} from "./ticket-fullinfo";
+import {DialogTicket} from "./dialog-ticket";
 
 export interface Dialog {
-  id:string;
-  messages: Message[];
-  ticket: TicketFullinfo
+  id:string
+  messages: Message[]
+  ticket: DialogTicket
 }

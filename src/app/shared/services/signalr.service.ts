@@ -1,11 +1,11 @@
 import {Injectable} from '@angular/core';
 import * as signalR from "@microsoft/signalr";
-import {catchError, Observable, of, Subject} from "rxjs";
+import {Observable, Subject} from "rxjs";
 import {ChatMessage} from "../interfaces/chat-message";
 import {HttpClient} from "@angular/common/http";
 import {IHttpConnectionOptions} from "@microsoft/signalr";
 import {TokenService} from "./token.service";
-import {sendMessage} from "@microsoft/signalr/dist/esm/Utils";
+import {Message} from "../interfaces/message";
 
 @Injectable({
   providedIn: 'root'
@@ -14,6 +14,7 @@ export class SignalrService {
 
   private readonly apiUrl = 'https://localhost:7100'
   private hubConnection!: signalR.HubConnection;
+  private newMessage$ = new Subject<Message>()
 
   constructor(private readonly http: HttpClient,
               private readonly tokenService: TokenService) {
@@ -25,7 +26,7 @@ export class SignalrService {
     };
 
     this.hubConnection = new signalR.HubConnectionBuilder()
-      .withUrl(`${this.apiUrl}/Hubs`, options)
+      .withUrl(`${this.apiUrl}/Messages`, options)
       .configureLogging(signalR.LogLevel.Information)
       .build();
 
@@ -40,15 +41,36 @@ export class SignalrService {
   }
 
   private addReceiveMessageListener(): void {
-    this.hubConnection.on('ReceiveMessage', (res, test) => {
-      console.log(res, test);
-    });
+    this.hubConnection.on('ReceiveMessage',
+      (text: string, userName: string, dialogId, userId: string, attachments: string[]) => {
+        const message: Message = {
+          text: text,
+          userName: userName,
+          dialogId: dialogId,
+          userId: userId,
+          whenSended: new Date(),
+          attachments: attachments
+        }
+
+        this.newMessage$.next(message)
+      });
   }
 
-  public sendMessage(message: ChatMessage) {
+  public getNewMessage(): Observable<Message> {
+    return this.newMessage$.asObservable();
+  }
 
-    console.log('--sendMessage')
-    return this.http.post('https://localhost:7100/api/Hubs', message)
+  public sendMessage(message: ChatMessage, files: File[]) : Observable<Message> {
+
+    const formData = new FormData()
+
+    for (let file of files) {
+      formData.append('files', file)
+    }
+
+    formData.append("text", message.text)
+
+    return this.http.post<Message>(`${this.apiUrl}/api/Messages/${message.dialogId}`, formData)
   }
 
 }

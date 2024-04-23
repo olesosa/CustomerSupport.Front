@@ -3,11 +3,12 @@
 
 .dialog-page {
   display: flex;
-  min-height: 75vh;
+  height: 75vh;
   flex-direction: row;
   margin-left: 5%;
 
   .dialogs-list {
+    overflow-y: auto;
     display: flex;
     flex-direction: column;
     width: 20%;
@@ -38,11 +39,26 @@
     border-radius: 30px;
     margin: 10px;
 
+    .dialog-ticket {
+      background-color: $secondary-color;
+      border-radius: 25px;
+      padding: 10px;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+    }
+
     .message-list {
-      min-height: 50vh;
+      height: 50vh;
+      overflow-y: auto;
+      flex-direction: column;
+      display: flex;
 
       .message {
 
+        .message-attachments{
+
+        }
       }
     }
 
@@ -65,4 +81,26 @@
       }
     }
   }
+}
+
+.attachment{
+  color: $accent-color;
+  cursor: pointer;
+}
+
+.no-dialog-selected{
+  @include main-content();
+
+  font-size: 2rem;
+  color: rgba(211, 211, 211, 0.5);
+}
+
+.link{
+  cursor: pointer;
+  transition: background-color 0.5s ease;
+  @include router-link-text();
+}
+
+.link:hover{
+  color: $accent-color;
 }

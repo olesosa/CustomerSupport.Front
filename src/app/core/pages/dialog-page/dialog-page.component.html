@@ -1,32 +1,65 @@
 <div class="dialog-page">
 
-  <div class="dialogs-list">
-    <div class="dialog-item" (click)="onChooseDialog(dialog.id)" *ngFor="let dialog of dialogs">
+  <div class="dialogs-list" *ngIf="dialogs">
+    <div class="dialog-item"
+         (click)="onChooseDialog(dialog.id)"
+         *ngFor="let dialog of dialogs">
+      <p>Ticket {{ dialog.number }}</p>
       <p>{{ dialog.lastMassage }}</p>
     </div>
   </div>
 
   <div class="dialog-hub">
 
-    <p-scroller [itemSize]="10">
-      <div class="dialog-ticket" *ngIf="isDialogSelected">
-        <p routerLink="/tickets/{{currentDialog.ticket.id}}">Ticket</p>
+    <div class="no-dialog-selected" *ngIf="!isDialogSelected && dialogs.length !== 0">
+      <h1>No Dialog Selected</h1>
+    </div>
+
+    <div class="no-dialog-selected" *ngIf="!isDialogSelected && dialogs.length === 0">
+      <h1>No Dialogs Yet</h1>
+    </div>
+
+    <div class="ticket-info">
+      <div class="dialog-ticket" *ngIf="isDialogSelected && currentTicket">
+        <p><a class="link" routerLink="/tickets/{{currentTicket.number}}">Topic {{ currentTicket.topic }}</a></p>
+        <button *ngIf="isAdmin" (click)="display=true" pButton><i class="pi pi-bars"></i></button>
       </div>
+    </div>
 
-      <div class="message-list" *ngIf="isDialogSelected">
-
-        <div class="message" *ngFor="let message of currentDialogMessages">
-          <p>{{ message.text }} from {{ message.userName }}</p>
+    <p-dialog header="Reassign Ticket" [(visible)]="display" position="top">
+      <p>Choose admin to reassign ticket?</p>
+      <div *ngIf="admins">
+        <div class="admins" *ngFor="let admin of admins">
+          <div *ngIf="currentTicket">
+            <p *ngIf="admin.id != currentTicket.adminId"
+               class="link"
+               (click)="reassign(currentTicket.id, admin.id)">
+              {{ admin.email }}</p>
+          </div>
         </div>
-
       </div>
-    </p-scroller>
+    </p-dialog>
 
+    <div id="message-list" class="message-list" *ngIf="isDialogSelected">
+      <div *ngFor="let message of currentDialogMessages">
+        <p>{{ message.text }} from {{ message.userName }} at {{ message.whenSended | ticketDate }}</p>
+        <div class="message-attachments" *ngIf="message.attachments.length != 0">
+          <div *ngFor="let attachment of message.attachments">
+            <p class="attachment" (click)="downloadAttachment(attachment)">Download Attachment</p>
+          </div>
+        </div>
+      </div>
 
-    <div class="send-message">
+    </div>
+
+    <div class="send-message" *ngIf="isDialogSelected">
       <input pInputText type="text" [(ngModel)]="currentMessageText" (keyup)="onKeyUp($event)"/>
-      <button (click)="sendMessage()" pButton><i class="pi pi-plus"></i></button>
-      <button (click)="addAttachment()" pButton><i class="pi pi-send"></i></button>
+      <button pButton>
+        <i class="pi pi-upload" (click)="attach.click()">
+          <input type="file" multiple hidden #attach (change)="onAttachmentUpload($event)"/>
+        </i>
+      </button>
+      <button (click)="sendMessage()" pButton><i class="pi pi-send"></i></button>
     </div>
 
   </div>

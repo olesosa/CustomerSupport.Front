@@ -5,6 +5,9 @@ import {SharedModule} from "../../../shared/modules/shared.module";
 import {RouterModule, Routes } from '@angular/router';
 import {CarouselModule} from "primeng/carousel";
 import {FormsModule} from "@angular/forms";
+import {AppModule} from "../../../app.module";
+import {CustomDatePipe} from "../../../shared/pipes/custom-date-pipe";
+import {DialogModule} from "primeng/dialog";
 
 const routes: Routes = [
   {
@@ -17,13 +20,15 @@ const routes: Routes = [
   declarations: [
     DialogPageComponent
   ],
-  imports: [
-    CommonModule,
-    RouterModule.forChild(routes),
-    CarouselModule,
-    FormsModule,
-    SharedModule
-  ],
+    imports: [
+        CommonModule,
+        RouterModule.forChild(routes),
+        CarouselModule,
+        FormsModule,
+        SharedModule,
+        CustomDatePipe,
+        DialogModule
+    ],
   exports: [
     RouterModule
   ]
