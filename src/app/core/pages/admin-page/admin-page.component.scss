@@ -1,0 +1,46 @@
+@import "../../../shared/styles/variables";
+@import "../../../shared/styles/mixins";
+
+.admin-page {
+
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  margin-left: 5%;
+  margin-right: 5%;
+  height: 75vh;
+
+  .admin-form {
+    form{
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+
+      .element{
+        display: flex;
+        flex-direction: column;
+        margin: 10px;
+      }
+    }
+  }
+}
+
+.admin-select {
+  padding: 10px;
+  cursor: pointer;
+  transition: background-color 0.5s ease;
+}
+
+.admin-select:hover {
+  background-color: $accent-color;
+}
+
+input{
+  border-radius: 20px;
+}
+
+.dialog-btn{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}

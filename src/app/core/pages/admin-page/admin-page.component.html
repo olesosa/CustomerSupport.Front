@@ -1,0 +1,52 @@
+<div class="admin-page">
+
+  <div class="admin-form">
+
+    <h2>Create Admin</h2>
+    <form [formGroup]="adminCreateForm" (ngSubmit)="onSubmit()">
+      <div class="element">
+        <label for="email">Email</label>
+        <input id="email" type="email" formControlName="email" pInputText>
+      </div>
+
+      <div class="element">
+        <label for="password">Password</label>
+        <input id="password" type="password" formControlName="password" pInputText>
+      </div>
+
+      <div class="element">
+        <label for="confirmPassword">Confirm Password</label>
+        <input id="confirmPassword" type="password" formControlName="confirmPassword" pInputText>
+      </div>
+
+      <div class="element">
+        <button type="submit" [disabled]="!adminCreateForm.valid" pButton>Create</button>
+      </div>
+
+    </form>
+
+  </div>
+
+  <div class="admin-form">
+
+    <h2>Remove Admin</h2>
+    <button (click)="onViewSelect()" pButton>Select admin to remove</button>
+
+    <p-scroller [items]="admins" [itemSize]="10">
+      <ng-template pTemplate="admins" let-admin>
+        <p class="admin-select" (click)="onSelect(admin)">{{ admin.email }}</p>
+      </ng-template>
+    </p-scroller>
+
+
+  </div>
+
+  <p-dialog header="Remove Admin" [(visible)]="display" position="top">
+    <p>Are you sure you want delete admin?</p>
+    <div class="dialog-btn">
+      <button (click)="remove()" pButton><i class="pi pi-check" style="font-size: 1.2rem"></i></button>
+      <button (click)="display=false" pButton><i class="pi pi-times" style="font-size: 1.2rem"></i></button>
+    </div>
+  </p-dialog>
+
+</div>

@@ -1,40 +1,94 @@
-<div class="tickets-list">
-    <p-table
-      [value]="tickets"
-      [lazy]="true"
-      (onLazyLoad)="loadTickets($event)"
-      [paginator]="true"
-      [rows]="5"
-      [totalRecords]="totalRecords"
-      [globalFilterFields]="['number', 'requestType', 'topic']"
-    >
-      <ng-template pTemplate="header">
-        <tr>
-          <th pSortableColumn="number">Number
-            <p-sortIcon field="number"></p-sortIcon>
-          </th>
-          <th>Request Type</th>
-          <th>Topic</th>
-        </tr>
-        <tr>
-          <th>
-            <p-columnFilter type="text" field="number"></p-columnFilter>
-          </th>
-          <th>
-            <p-columnFilter type="text" field="requestType"></p-columnFilter>
-          </th>
-          <th>
-            <p-columnFilter type="text" field="topic"></p-columnFilter>
-          </th>
-        </tr>
-      </ng-template>
-      <ng-template pTemplate="body" let-ticket>
-        <tr routerLink='/tickets/view' class="ticket-link">
-          <td>{{ ticket.number }}</td>
-          <td>{{ ticket.requestType }}</td>
-          <td>{{ ticket.topic }}</td>
-        </tr>
-      </ng-template>
-    </p-table>
-</div>
+<div class="tickets-page">
 
+  <div class="tickets-list">
+
+    <div class="ticket-filters">
+
+      <div class="filter-item">
+        <label for="requestTypes">Request</label>
+        <p-dropdown id="requestTypes"
+                    [options]="requestTypes"
+                    [(ngModel)]="requestTypesSelectedOption"
+                    (ngModelChange)="loadTickets($event)"
+        ></p-dropdown>
+      </div>
+
+      <div class="filter-item">
+        <label for="assigned">Assigned</label>
+        <p-dropdown id="assigned"
+                    [options]="ticketFilterOptions"
+                    placeholder="Request Filter"
+                    [(ngModel)]="assignedSelectedOption"
+                    (ngModelChange)="loadTickets($event)"
+        ></p-dropdown>
+      </div>
+
+      <div class="filter-item">
+        <label for="solved">Solved</label>
+        <p-dropdown id="solved"
+                    [options]="ticketFilterOptions"
+                    [(ngModel)]="solvedSelectedOption"
+                    (ngModelChange)="loadTickets($event)"
+        ></p-dropdown>
+      </div>
+
+      <div class="filter-item">
+        <label for="closed">Closed</label>
+        <p-dropdown id="closed"
+                    [options]="ticketFilterOptions"
+                    [(ngModel)]="closedSelectedOption"
+                    (ngModelChange)="loadTickets($event)"
+        ></p-dropdown>
+      </div>
+    </div>
+
+    <div class="tickets-table">
+      <p-table
+        [value]="tickets"
+        [lazy]="true"
+        (onLazyLoad)="loadTickets($event)"
+        [paginator]="true"
+        [rows]="5"
+        [totalRecords]="totalRecords"
+        [globalFilterFields]="['number', 'requestType', 'topic']"
+        styleClass="p-datatable-striped"
+        [rowsPerPageOptions]="[5, 10, 20]"
+      >
+        <ng-template pTemplate="header">
+          <tr>
+            <th pSortableColumn="number">Number
+              <p-sortIcon field="name"></p-sortIcon>
+            </th>
+            <th>Request Type</th>
+            <th>Topic</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-ticket>
+          <tr class="ticket-link" routerLink='/tickets/{{ticket.number}}'>
+            <td>{{ ticket.number }}</td>
+            <td>{{ getRequestTypeName(ticket.requestType) }}</td>
+            <td>{{ ticket.topic }}</td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="paginatorleft">
+          <button (click)="createTicket()"
+                  type="button"
+                  pButton icon="pi pi-plus"
+                  styleClass="p-button-text"></button>
+        </ng-template>
+      </p-table>
+    </div>
+
+    <div class="spinner" *ngIf="spinnerActive">
+      <p-progressSpinner></p-progressSpinner>
+    </div>
+
+  </div>
+
+  <div class="tickets-statistic" *ngIf="requestTypesSelectedOption === 'All'">
+    <div class="graphic">
+      <p-chart type="bar" [data]="data"></p-chart>
+    </div>
+  </div>
+
+</div>

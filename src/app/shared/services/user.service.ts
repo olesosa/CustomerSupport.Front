@@ -41,4 +41,9 @@ export class UserService {
     return this.http.get<UserInfo>(this.apiUrl);
   }
 
+  public getAllAdmins() : Observable<User[]>{
+
+    return this.http.get<User[]>(this.apiUrl + '/Admins')
+  }
+
 }

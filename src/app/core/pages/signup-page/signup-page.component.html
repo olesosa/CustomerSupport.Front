@@ -19,3 +19,10 @@
     <p-progressSpinner></p-progressSpinner>
   </div>
 </form>
+
+<p-dialog header="SignUp" [(visible)]="display" position="top">
+  <p>Great, now verify your email</p>
+  <div class="dialog-btn">
+    <button (click)="display=false" pButton>Ok</button>
+  </div>
+</p-dialog>

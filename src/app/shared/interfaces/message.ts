@@ -1,8 +1,8 @@
 export interface Message {
-  id: string,
-  userId: string,
-  userName: string,
-  text: string,
-  attachmentIds: string[]
+  dialogId: string
+  userId: string
+  userName: string
+  text: string
   whenSended: Date
+  attachments: string[]
 }

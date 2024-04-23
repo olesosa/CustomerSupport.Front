@@ -1,7 +1,7 @@
 export interface DialogFilter {
-  userId?: string;
-  roleName?: string;
+  userId?: string
+  roleName?: string
 
-  sortDir?:string;
-  dateTime?: boolean;
+  sortDir?: string
+  dateTime?: boolean
 }

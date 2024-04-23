@@ -1,4 +1,4 @@
-export interface UserLogin {
+export interface AdminCreate {
   email: string
   password: string
 }

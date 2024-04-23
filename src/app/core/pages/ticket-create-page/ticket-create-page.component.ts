@@ -7,7 +7,6 @@ import {Router} from "@angular/router";
 import {ConstVariables} from "../../../const-variables";
 import {getRequestTypeValue} from "../../../shared/helpers/mapper";
 import {AttachmentService} from "../../../shared/services/attachment.service";
-import {FileUploadEvent} from "primeng/fileupload";
 
 @Component({
   selector: 'app-ticket-create-page',
@@ -18,6 +17,7 @@ import {FileUploadEvent} from "primeng/fileupload";
 export class TicketCreatePageComponent implements OnDestroy {
 
   private readonly destroy$ = new Subject<void>()
+  private filesToUpload: File[] = []
   requestTypes = ConstVariables.requestTypes
 
   constructor(private readonly ticketService: TicketService,
@@ -49,14 +49,11 @@ export class TicketCreatePageComponent implements OnDestroy {
       )
       .subscribe({
         next: (res) => {
-          console.log(res)
           this.router.navigateByUrl('/tickets')
         },
         error: err => console.log(err)
       })
   }
-
-  private filesToUpload: File[] = []
 
   onAttachmentUpload(event: any) {
     this.filesToUpload = event.target.files

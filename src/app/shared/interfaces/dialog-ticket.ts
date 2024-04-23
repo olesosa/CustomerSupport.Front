@@ -1,8 +1,10 @@
 import {RequestTypes} from "../enums/request-types";
 
-export interface TicketShortinfo {
+export interface DialogTicket {
   id: string
+  customerId: string
+  adminId: string
   number: number
-  requestType: RequestTypes
+  request: RequestTypes
   topic: string
 }

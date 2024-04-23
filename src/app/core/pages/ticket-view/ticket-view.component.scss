@@ -18,21 +18,51 @@
     .ticket-element-admin {
       display: flex;
       flex-direction: column;
+      justify-content: center;
 
-      button {
-        margin: 10px;
+      .admin-btn {
+
+        display: flex;
+        justify-content: center;
+        button {
+          margin: 10px;
+          width: 70%;
+          border-radius: 20px;
+        }
+      }
+    }
+
+    .ticket-edit {
+
+      .ticket-element {
+
+        display: flex;
+        flex-direction: row;
+
+        .centered-icon {
+
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          margin: 10px;
+
+          .icon {
+            color: $base-color;
+            font-size: 1.2rem;
+          }
+
+          .red{
+            color: tomato;
+          }
+        }
       }
     }
 
     .ticket-element {
-      .ticket-options-checkbox {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        margin: 15px;
-      }
+
       button {
         margin: 15px;
+        border-radius: 20px;
       }
 
       .link {
@@ -48,10 +78,21 @@
     flex-direction: column;
 
 
-    .ticket-element{
-      label{
+    .ticket-element {
+      label {
         color: $accent-color;
       }
     }
   }
+
+}
+
+.dialog {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.button {
+
 }

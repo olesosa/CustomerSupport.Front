@@ -1,13 +1,9 @@
 import {RequestTypes} from "../enums/request-types";
 
-export interface TicketFilter {
-  skip: number
-  take: number
+export interface StatisticFilter {
   requestType?: RequestTypes
   isAssigned?: boolean
   isSolved?: boolean
   isClosed?: boolean
-  userId?: string
-  sortDir?: string
-  number?: boolean
+  userId?: boolean
 }

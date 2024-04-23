@@ -8,6 +8,7 @@ import {CoreModule} from "./core/components/core.module";
 import {AuthInterceptor} from "./core/interceptors/auth.interceptor";
 import {provideAnimations} from "@angular/platform-browser/animations";
 import { AdminPageComponent } from './core/pages/admin-page/admin-page.component';
+import {CustomDatePipe} from "./shared/pipes/custom-date-pipe";
 
 @NgModule({
   declarations: [
@@ -28,7 +29,6 @@ import { AdminPageComponent } from './core/pages/admin-page/admin-page.component
     },
     provideAnimations()
   ],
-  exports: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -1,12 +1,10 @@
 import {Component, OnDestroy} from '@angular/core';
-import {AbstractControl, FormControl, FormGroup, ValidatorFn, Validators} from "@angular/forms";
+import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {UserService} from "../../../shared/services/user.service";
-import {ConstVariables} from "../../../const-variables";
-import {catchError, finalize, of, Subject, takeUntil} from "rxjs";
+import {catchError, finalize, from, of, Subject, takeUntil} from "rxjs";
 import {UserSignup} from "../../../shared/interfaces/user-signup";
-import {error} from "@angular/compiler-cli/src/transformers/util";
 import {Router} from "@angular/router";
-import {HttpErrorResponse} from "@angular/common/http";
+import {CustomValidator} from "../../../shared/validators/custom-validator";
 
 @Component({
   selector: 'app-signup-page',
@@ -19,6 +17,7 @@ export class SignupPageComponent implements OnDestroy {
 
   buttonLock: boolean = false;
   spinnerActive: boolean = false;
+  display: boolean = false
 
   constructor(private readonly userService: UserService,
               private readonly router: Router) {
@@ -29,16 +28,16 @@ export class SignupPageComponent implements OnDestroy {
         [Validators.required, Validators.minLength(4), Validators.maxLength(20)]),
 
       email: new FormControl('',
-        [Validators.required, Validators.pattern(ConstVariables.emailPattern)]),
+        [Validators.required, Validators.pattern(CustomValidator.emailPattern)]),
 
       password: new FormControl('',
-        [Validators.required, Validators.pattern(ConstVariables.passwordPattern)]),
+        [Validators.required, Validators.pattern(CustomValidator.passwordPattern)]),
 
       confirmPassword: new FormControl('',
-        [Validators.required, Validators.pattern(ConstVariables.passwordPattern)])
+        [Validators.required, Validators.pattern(CustomValidator.passwordPattern)])
     },
     {
-      validators: this.matchValidator('password', 'confirmPassword')
+      validators: CustomValidator.matchValidator('password', 'confirmPassword')
     });
 
   onSubmit() {
@@ -46,7 +45,7 @@ export class SignupPageComponent implements OnDestroy {
     this.spinnerActive = true
 
     const user: UserSignup = {
-      username:this.signupForm.value.name!,
+      username: this.signupForm.value.name!,
       email: this.signupForm.value.email!,
       password: this.signupForm.value.password!
     }
@@ -61,7 +60,10 @@ export class SignupPageComponent implements OnDestroy {
         })
       )
       .subscribe({
-        next: () => this.router.navigate(['/login']),
+        next: () => {
+          this.router.navigateByUrl('')
+          this.display = true
+        },
         error: (error) => console.log(error)
       });
   }
@@ -69,26 +71,6 @@ export class SignupPageComponent implements OnDestroy {
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
-  }
-
-  private matchValidator(controlName: string, matchingControlName: string): ValidatorFn {
-    return (abstractControl: AbstractControl) => {
-      const control = abstractControl.get(controlName);
-      const matchingControl = abstractControl.get(matchingControlName);
-
-      if (matchingControl!.errors && !matchingControl!.errors?.['confirmedValidator']) {
-        return null;
-      }
-
-      if (control!.value !== matchingControl!.value) {
-        const error = {confirmedValidator: 'Passwords do not match.'};
-        matchingControl!.setErrors(error);
-        return error;
-      } else {
-        matchingControl!.setErrors(null);
-        return null;
-      }
-    }
   }
 }
 

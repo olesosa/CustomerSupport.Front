@@ -7,6 +7,8 @@ import {TableModule} from "primeng/table";
 import {PaginatorModule} from "primeng/paginator";
 import {MultiSelectModule} from "primeng/multiselect";
 import {ReactiveFormsModule} from "@angular/forms";
+import {ChartModule} from "primeng/chart";
+import {AutoCompleteModule} from "primeng/autocomplete";
 
 const routes: Routes = [
   {
@@ -27,6 +29,8 @@ const routes: Routes = [
         MultiSelectModule,
         ReactiveFormsModule,
         SharedModule,
+        ChartModule,
+        AutoCompleteModule,
     ],
   exports:[
     RouterModule

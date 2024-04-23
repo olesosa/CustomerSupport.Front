@@ -1,7 +1,6 @@
 import {RequestTypes} from "../enums/request-types";
 
-export interface TicketCreate {
+export interface Statistic {
   requestType: RequestTypes
-  topic: string
-  description: string
+  count: number
 }
