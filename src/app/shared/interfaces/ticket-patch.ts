@@ -1,5 +1,8 @@
 export interface TicketPatch {
-  ticketId: string,
-  isSolved: boolean,
-  isClosed: boolean
+  id: string
+  ticketId: string
+  IsAssigned: boolean
+  IsSolved: boolean
+  IsClosed: boolean
+  HasReceived?: boolean
 }
