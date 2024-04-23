@@ -1,21 +1,57 @@
 @import "../../../shared/styles/variables";
 @import "../../../shared/styles/mixins";
 
-.tickets-list {
-  margin-left: 5%;
-  margin-right: 5%;
-  height:75%;
+.tickets-page {
 
-  .list-item {
-    border-radius: 20px;
-    padding: 5px;
-    margin: 10px;
-    background-color: lighten($background-color, 10);
+  min-height: 75vh;
+  display: flex;
+  flex-direction: column;
+
+  .tickets-list {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+
+    .ticket-filters {
+      width: 25%;
+      flex-direction: column;
+
+      .filter-item {
+        display: flex;
+        align-items: center;
+        flex-direction: row;
+        justify-content: space-between;
+        margin: 10px;
+        padding: 5px;
+      }
+
+      @media (max-width: 426px) {
+        .filter-item {
+          flex-direction: column;
+        }
+      }
+    }
+
+    .tickets-table {
+      width: 60%;
+    }
   }
 
-  .ticket-link{
+  .ticket-link {
     cursor: pointer;
+    transition: background-color 0.5s ease;
+  }
+
+  .ticket-link:hover {
+    background-color: $accent-color;
+  }
+
+  .tickets-statistic {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    .graphic{
+      width: 60%;
+    }
   }
 }
-
-
