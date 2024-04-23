@@ -7,6 +7,8 @@ import {ConstVariables} from "../../../const-variables";
 import {TokenService} from "../../../shared/services/token.service";
 import {Router} from "@angular/router";
 import {MessageService} from "primeng/api";
+import {CustomValidator} from "../../../shared/validators/custom-validator";
+import {HttpErrorResponse} from "@angular/common/http";
 
 @Component({
   selector: 'app-login-page',
@@ -17,12 +19,9 @@ import {MessageService} from "primeng/api";
 export class LoginPageComponent implements OnDestroy {
 
   private readonly destroy$ = new Subject<void>();
-  private readonly user: UserLogin = {
-    email: '',
-    password: ''
-  };
   buttonLock: boolean = false;
   spinnerActive: boolean = false;
+  display: boolean = false
 
   constructor(private readonly userService: UserService,
               private readonly storageService: TokenService,
@@ -31,22 +30,29 @@ export class LoginPageComponent implements OnDestroy {
 
   loginForm = new FormGroup({
     email: new FormControl('',
-      [Validators.required, Validators.pattern(ConstVariables.emailPattern)]),
+      [Validators.required, Validators.pattern(CustomValidator.emailPattern)]),
     password: new FormControl('',
-      [Validators.required, Validators.pattern(ConstVariables.passwordPattern)])
+      [Validators.required, Validators.pattern(CustomValidator.passwordPattern)])
   });
 
   onSubmit() {
-    this.user.email = this.loginForm.value.email!;
-    this.user.password = this.loginForm.value.password!;
+
+    const user: UserLogin = {
+      email: this.loginForm.value.email!,
+      password: this.loginForm.value.password!
+    }
 
     this.buttonLock = true;
     this.spinnerActive = true
 
-    this.userService.logIn(this.user)
+    this.userService.logIn(user)
       .pipe(
         takeUntil(this.destroy$),
         catchError(error => of(error)),
+        finalize(() => {
+          this.buttonLock = false
+          this.spinnerActive = false
+        }),
         switchMap(token => {
           this.storageService.setToken(token)
           return this.userService.GetUser()
@@ -62,7 +68,12 @@ export class LoginPageComponent implements OnDestroy {
       )
       .subscribe({
         next: () => this.router.navigateByUrl('/').then(() => window.location.reload()),
-        error: error => console.log(error)
+        error: error => {
+          // console.log(error)
+          if (error instanceof HttpErrorResponse && error.status == 400){
+            this.display = true
+          }
+        }
       })
 
 

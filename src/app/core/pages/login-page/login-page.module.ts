@@ -4,6 +4,7 @@ import {LoginPageComponent} from "./login-page.component";
 import {SharedModule} from "../../../shared/modules/shared.module";
 import {RouterModule, Routes} from "@angular/router";
 import {ReactiveFormsModule} from "@angular/forms";
+import {DialogModule} from "primeng/dialog";
 
 const routes: Routes = [
   {
@@ -20,7 +21,8 @@ const routes: Routes = [
         CommonModule,
         RouterModule.forChild(routes),
         ReactiveFormsModule,
-        SharedModule
+        SharedModule,
+        DialogModule
     ],
   exports:[
     RouterModule
