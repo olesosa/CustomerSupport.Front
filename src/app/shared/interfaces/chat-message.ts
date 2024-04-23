@@ -1,4 +1,4 @@
 export interface ChatMessage {
-  dialogId: string;
-  text: string;
+  dialogId: string
+  text: string
 }
