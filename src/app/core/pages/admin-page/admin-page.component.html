@@ -38,15 +38,16 @@
       </ng-template>
     </p-scroller>
 
-
   </div>
 
-  <p-dialog header="Remove Admin" [(visible)]="display" position="top">
-    <p>Are you sure you want delete admin?</p>
-    <div class="dialog-btn">
-      <button (click)="remove()" pButton><i class="pi pi-check" style="font-size: 1.2rem"></i></button>
-      <button (click)="display=false" pButton><i class="pi pi-times" style="font-size: 1.2rem"></i></button>
-    </div>
-  </p-dialog>
-
 </div>
+
+
+<p-dialog header="Delete admin" [(visible)]="display" [draggable]="false" position="top">
+  <p>Are you sure you want to delete admin</p>
+  <div class="dialog-btn">
+    <button (click)="remove()" pButton>
+      <i class="pi pi-check" style="font-size: 1.2rem"></i>
+    </button>
+  </div>
+</p-dialog>

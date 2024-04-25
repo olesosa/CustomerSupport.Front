@@ -15,7 +15,7 @@
 
 </header>
 
-<p-dialog header="Log Out" [(visible)]="display" position="top">
+<p-dialog header="Log Out" [(visible)]="display" [draggable]="false" position="top">
   <p>Are you sure you want to log out?</p>
   <div class="dialog-btn">
     <button (click)="onLogOut()" pButton>

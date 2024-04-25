@@ -24,4 +24,9 @@ export class AdminService {
 
     return this.http.delete(this.apiUrl + `/${adminId}`)
   }
+
+  public getAll(){
+
+    return this.http.get<User[]>(this.apiUrl)
+  }
 }
