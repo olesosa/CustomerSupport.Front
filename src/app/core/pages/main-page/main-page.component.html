@@ -10,8 +10,9 @@
 
   <p-dialog header="You have to be authorized to create a ticket"
             [(visible)]="display"
+            [draggable]="false"
             position="top">
-    <p>Please <a routerLink="/login">LogIn</a> or <a routerLink="/signup">SignUp</a> if you don't have an account
+    <p>Please <a routerLink="/login">Log In</a> or <a routerLink="/signup">Sign Up</a> if you don't have an account
       already</p>
   </p-dialog>
 
@@ -29,6 +30,5 @@
       <img ngSrc="/assets/logo.svg" alt="Logo" height="200" width="200" priority>
     </div>
   </div>
-
 
 </main>

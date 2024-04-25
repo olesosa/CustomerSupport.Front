@@ -8,12 +8,10 @@ import {DialogService} from "../../../shared/services/dialog.service";
 import {Dialog} from "../../../shared/interfaces/dialog";
 import {MessageService} from "../../../shared/services/message.service";
 import {Message} from "../../../shared/interfaces/message";
-import {getRequestTypeName} from "../../../shared/helpers/mapper";
 import {User} from "../../../shared/interfaces/user";
 import {UserService} from "../../../shared/services/user.service";
 import {TicketService} from "../../../shared/services/ticket.service";
 import {AttachmentService} from "../../../shared/services/attachment.service";
-import {TicketFullinfo} from "../../../shared/interfaces/ticket-fullinfo";
 import {DialogTicket} from "../../../shared/interfaces/dialog-ticket";
 
 @Component({
@@ -65,7 +63,7 @@ export class DialogPageComponent implements OnInit, OnDestroy {
       .pipe(
         takeUntil(this.destroy$),
         switchMap(message => {
-          this.currentDialogMessages.push(message)
+          this.currentDialogMessages.unshift(message)
 
           return this.messageService.readMessages(this.currentDialog.id)
             .pipe(
@@ -74,9 +72,6 @@ export class DialogPageComponent implements OnInit, OnDestroy {
         })
       )
       .subscribe()
-
-    let element = document.getElementById('message-list');
-    element!.scrollTop = element!.scrollHeight;
   }
 
   onChooseDialog(dialogId: string) {
@@ -131,7 +126,7 @@ export class DialogPageComponent implements OnInit, OnDestroy {
       .subscribe(newMessage => {
         this.currentMessageText = ''
         this.filesToUpload = []
-        this.currentDialogMessages.push(newMessage)
+        this.currentDialogMessages.unshift(newMessage)
       })
   }
 
@@ -169,6 +164,4 @@ export class DialogPageComponent implements OnInit, OnDestroy {
     this.destroy$.next()
     this.destroy$.complete()
   }
-
-  protected readonly getRequestTypeName = getRequestTypeName;
 }

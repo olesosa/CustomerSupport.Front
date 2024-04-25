@@ -34,30 +34,37 @@
   .dialog-hub {
     flex-direction: column;
     width: 70%;
-    padding: 30px;
+    padding: 20px;
     background-color: darken($background-color, 4);
     border-radius: 30px;
     margin: 10px;
 
     .dialog-ticket {
-      background-color: $secondary-color;
+      background-color: $base-color;
       border-radius: 25px;
       padding: 10px;
       display: flex;
       flex-direction: row;
       justify-content: space-between;
+
+      button{
+        background-color: transparent;
+      }
     }
 
     .message-list {
-      height: 50vh;
+      height: 53vh;
       overflow-y: auto;
-      flex-direction: column;
       display: flex;
+      flex-direction: column-reverse;
 
       .message {
-
-        .message-attachments{
-
+        margin:15px;
+        .message-text{
+          margin:10px;
+          padding: 10px;
+          background-color: $secondary-color;
+          border-radius: 20px;
         }
       }
     }
@@ -70,10 +77,14 @@
       input {
         border-radius: 20px;
         width: 85%;
+        margin-left: 5px;
+        margin-right: 5px;
       }
 
       button {
         border-radius: 20px;
+        margin-left: 5px;
+        margin-right: 5px;
       }
 
       i {

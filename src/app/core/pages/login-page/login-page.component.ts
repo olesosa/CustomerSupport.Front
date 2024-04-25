@@ -3,7 +3,6 @@ import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {UserService} from "../../../shared/services/user.service";
 import {UserLogin} from "../../../shared/interfaces/user-login";
 import {catchError, finalize, of, Subject, switchMap, takeUntil} from "rxjs";
-import {ConstVariables} from "../../../const-variables";
 import {TokenService} from "../../../shared/services/token.service";
 import {Router} from "@angular/router";
 import {MessageService} from "primeng/api";
@@ -21,7 +20,8 @@ export class LoginPageComponent implements OnDestroy {
   private readonly destroy$ = new Subject<void>();
   buttonLock: boolean = false;
   spinnerActive: boolean = false;
-  display: boolean = false
+  verificationIssue: boolean = false
+  emailNotConfirmed: boolean = false
 
   constructor(private readonly userService: UserService,
               private readonly storageService: TokenService,
@@ -48,7 +48,10 @@ export class LoginPageComponent implements OnDestroy {
     this.userService.logIn(user)
       .pipe(
         takeUntil(this.destroy$),
-        catchError(error => of(error)),
+        catchError(error => {
+          this.handleError(error)
+          throw new Error(error)
+        }),
         finalize(() => {
           this.buttonLock = false
           this.spinnerActive = false
@@ -58,7 +61,10 @@ export class LoginPageComponent implements OnDestroy {
           return this.userService.GetUser()
             .pipe(
               takeUntil(this.destroy$),
-              catchError(error => of(error)),
+              catchError(error => {
+                this.handleError(error)
+                throw new Error(error)
+              }),
               finalize(() => {
                 this.buttonLock = false
                 this.spinnerActive = false
@@ -68,15 +74,20 @@ export class LoginPageComponent implements OnDestroy {
       )
       .subscribe({
         next: () => this.router.navigateByUrl('/').then(() => window.location.reload()),
-        error: error => {
-          // console.log(error)
-          if (error instanceof HttpErrorResponse && error.status == 400){
-            this.display = true
-          }
-        }
+        error: error => this.handleError(error)
       })
+  }
 
+  private handleError(error: HttpErrorResponse) {
 
+    console.log('dsjndskjvbsdkjvbds')
+
+    if (error.status === 400) {
+      this.verificationIssue = true
+    }
+    if (error.status === 401) {
+      this.emailNotConfirmed = true
+    }
   }
 
   ngOnDestroy() {
