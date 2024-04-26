@@ -22,8 +22,8 @@ export class TicketsPageComponent implements OnDestroy {
   totalRecords: number = 0
   spinnerActive: boolean = false;
   chartOptions: any[] = [
-    { name: 'Bar', value: 1 },
-    { name: 'Pie', value: 2 },
+    {name: 'Bar', value: 1},
+    {name: 'Pie', value: 2},
   ]
 
   readonly requestTypes: string[] = ['All', ...ConstVariables.requestTypes];
@@ -65,40 +65,32 @@ export class TicketsPageComponent implements OnDestroy {
         },
         error: (error) => console.log(error)
       })
-  }
 
-  getStatistic() {
+    const statisticFilter: StatisticFilter = this.getFilter()
 
-    if (this.selectedChart) {
-      this.spinnerActive = true
-
-      const statisticFilter: StatisticFilter = this.getFilter()
-
-      this.ticketService.getStatistic(statisticFilter)
-        .pipe(
-          takeUntil(this.destroy$),
-          catchError(err => of(err)),
-          finalize(() => this.spinnerActive = false)
-        )
-        .subscribe({
-          next: statistic => {
-            this.data = {
-              labels: this.getLabels(statistic),
-              datasets: [
-                {
-                  label: 'Request types',
-                  data: this.getCounts(statistic),
-                  backgroundColor: ['#7fd0f6', '#80c583', '#778f9b', '#c3dfa4'],
-                  borderColor: ['rgba(127,208,246,0.7)', 'rgba(127,195,130,0.7)', 'rgba(118,142,154,0.7)', 'rgba(193,221,163,0.7)'],
-                  borderWidth: 3
-                }
-              ]
-            }
-          },
-          error: err => console.log(err)
-        })
-    }
-
+    this.ticketService.getStatistic(statisticFilter)
+      .pipe(
+        takeUntil(this.destroy$),
+        catchError(err => of(err)),
+        finalize(() => this.spinnerActive = false)
+      )
+      .subscribe({
+        next: statistic => {
+          this.data = {
+            labels: this.getLabels(statistic),
+            datasets: [
+              {
+                label: 'Requests',
+                data: this.getCounts(statistic),
+                backgroundColor: ['#7fd0f6', '#80c583', '#778f9b', '#c3dfa4'],
+                borderColor: ['rgba(127,208,246,0.7)', 'rgba(127,195,130,0.7)', 'rgba(118,142,154,0.7)', 'rgba(193,221,163,0.7)'],
+                borderWidth: 3
+              }
+            ]
+          }
+        },
+        error: err => console.log(err)
+      })
   }
 
   createTicket() {
