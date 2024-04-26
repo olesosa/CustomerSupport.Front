@@ -9,6 +9,7 @@ import {MultiSelectModule} from "primeng/multiselect";
 import {ReactiveFormsModule} from "@angular/forms";
 import {ChartModule} from "primeng/chart";
 import {AutoCompleteModule} from "primeng/autocomplete";
+import {SelectButtonModule} from "primeng/selectbutton";
 
 const routes: Routes = [
   {
@@ -31,6 +32,7 @@ const routes: Routes = [
         SharedModule,
         ChartModule,
         AutoCompleteModule,
+        SelectButtonModule,
     ],
   exports:[
     RouterModule

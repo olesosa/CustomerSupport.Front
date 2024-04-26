@@ -29,22 +29,22 @@
 
       <div class="ticket-element">
         <p>Solved</p>
-        <div class="centered-icon">
-          <i *ngIf="ticket.isSolved" class="pi pi-check icon"></i>
+        <div class="centered-icon" *ngIf="ticket.isSolved">
+          <i  class="pi pi-check icon"></i>
         </div>
-        <div class="centered-icon">
-          <i *ngIf="!ticket.isSolved" class="pi pi-times icon red"></i>
+        <div class="centered-icon" *ngIf="!ticket.isSolved">
+          <i  class="pi pi-times icon red"></i>
         </div>
 
       </div>
 
       <div class="ticket-element">
         <p>Closed</p>
-        <div class="centered-icon">
-          <i *ngIf="ticket.isClosed" class="pi pi-check icon"></i>
+        <div class="centered-icon" *ngIf="ticket.isClosed">
+          <i class="pi pi-check icon"></i>
         </div>
-        <div class="centered-icon">
-          <i *ngIf="!ticket.isClosed" class="pi pi-times icon red"></i>
+        <div class="centered-icon" *ngIf="!ticket.isClosed">
+          <i class="pi pi-times icon red"></i>
         </div>
       </div>
 
@@ -71,12 +71,12 @@
 
     <div class="ticket-element">
       <label for="topic">Topic</label>
-      <p id="topic">{{ ticket.topic }}</p>
+      <p id="topic" class="ticket-content">{{ ticket.topic }}</p>
     </div>
 
     <div class="ticket-element">
       <label for="description">Description</label>
-      <p id="description">{{ ticket.description }}</p>
+      <p id="description" class="ticket-content">{{ ticket.description }}</p>
     </div>
 
   </div>
@@ -86,13 +86,16 @@
   </div>
 </div>
 
-<p-dialog header="Edit ticket info" [(visible)]="display" position="center">
+<p-dialog header="Edit ticket info"
+          [(visible)]="display"
+          [draggable]="false"
+          position="center"
+          [style]="{'width':'400px', 'height': '400px'}">
   <div class="dialog">
-    <p>Solved</p>
-    <p-inputSwitch [(ngModel)]="optionSolved"></p-inputSwitch>
-    <p>Closed</p>
-    <p-inputSwitch [(ngModel)]="optionClosed"></p-inputSwitch>
-    <br>
+      <p>Solved</p>
+      <p-inputSwitch [(ngModel)]="optionSolved"></p-inputSwitch>
+      <p>Closed</p>
+      <p-inputSwitch [(ngModel)]="optionClosed"></p-inputSwitch>
     <div class="dialog-btn">
       <button (click)="closeDialog()" pButton>
         <i class="pi pi-check" style="font-size: 1.2rem"></i>

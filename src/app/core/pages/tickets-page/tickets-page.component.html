@@ -40,6 +40,17 @@
                     (ngModelChange)="loadTickets($event)"
         ></p-dropdown>
       </div>
+
+      <div class="filter-item">
+        <label for="selectChart">Statistic</label>
+        <p-selectButton id="selectChart"
+                        [options]="chartOptions"
+                        [(ngModel)]="selectedChart"
+                        optionLabel="name"
+                        optionValue="value"
+        ></p-selectButton>
+      </div>
+
     </div>
 
     <div class="tickets-table">
@@ -52,7 +63,7 @@
         [totalRecords]="totalRecords"
         [globalFilterFields]="['number', 'requestType', 'topic']"
         styleClass="p-datatable-striped"
-        [rowsPerPageOptions]="[5, 10, 20]"
+        [rowsPerPageOptions]="[5, 10, 20, 50]"
       >
         <ng-template pTemplate="header">
           <tr>
@@ -76,6 +87,8 @@
                   pButton icon="pi pi-plus"
                   styleClass="p-button-text"></button>
         </ng-template>
+        <ng-template pTemplate="paginatorright">
+        </ng-template>
       </p-table>
     </div>
 
@@ -85,10 +98,19 @@
 
   </div>
 
-  <div class="tickets-statistic" *ngIf="requestTypesSelectedOption === 'All'">
-    <div class="graphic">
-      <p-chart type="bar" [data]="data"></p-chart>
+  <div class="tickets-statistic">
+    <div class="graphic-bar" *ngIf="selectedChart === 1">
+      <p-chart type="bar"
+               [data]="data"
+      ></p-chart>
     </div>
+
+    <div class="graphic-pie" *ngIf="selectedChart === 2">
+      <p-chart type="doughnut"
+               [data]="data"
+      ></p-chart>
+    </div>
+
   </div>
 
 </div>

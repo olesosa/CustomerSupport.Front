@@ -20,8 +20,7 @@ export class AdminPageComponent implements OnDestroy {
   selectedAdmin!: User
   isSelectVisible: boolean = false
 
-  constructor(private readonly adminService: AdminService,
-              private readonly userService: UserService) {
+  constructor(private readonly adminService: AdminService) {
   }
 
   adminCreateForm = new FormGroup({
@@ -50,6 +49,7 @@ export class AdminPageComponent implements OnDestroy {
         catchError(err => of(err))
       )
       .subscribe({
+        next: () => window.location.reload(),
         error: err => console.log(err)
       })
   }
@@ -62,6 +62,7 @@ export class AdminPageComponent implements OnDestroy {
         catchError(err => of(err))
       )
       .subscribe({
+        next: () => window.location.reload(),
         error: err => console.log(err)
       })
   }
@@ -69,7 +70,7 @@ export class AdminPageComponent implements OnDestroy {
   onViewSelect() {
     this.isSelectVisible = !this.isSelectVisible;
 
-    this.userService.getAllAdmins()
+    this.adminService.getAll()
       .pipe(
         takeUntil(this.destroy$)
       )

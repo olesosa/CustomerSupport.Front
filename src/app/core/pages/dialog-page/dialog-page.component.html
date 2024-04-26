@@ -19,30 +19,15 @@
       <h1>No Dialogs Yet</h1>
     </div>
 
-    <div class="ticket-info">
       <div class="dialog-ticket" *ngIf="isDialogSelected && currentTicket">
-        <p><a class="link" routerLink="/tickets/{{currentTicket.number}}">Topic {{ currentTicket.topic }}</a></p>
+        <p><a class="link" routerLink="/tickets/{{currentTicket.number}}">Topic: {{ currentTicket.topic }}</a></p>
         <button *ngIf="isAdmin" (click)="display=true" pButton><i class="pi pi-bars"></i></button>
       </div>
-    </div>
-
-    <p-dialog header="Reassign Ticket" [(visible)]="display" position="top">
-      <p>Choose admin to reassign ticket?</p>
-      <div *ngIf="admins">
-        <div class="admins" *ngFor="let admin of admins">
-          <div *ngIf="currentTicket">
-            <p *ngIf="admin.id != currentTicket.adminId"
-               class="link"
-               (click)="reassign(currentTicket.id, admin.id)">
-              {{ admin.email }}</p>
-          </div>
-        </div>
-      </div>
-    </p-dialog>
 
     <div id="message-list" class="message-list" *ngIf="isDialogSelected">
-      <div *ngFor="let message of currentDialogMessages">
-        <p>{{ message.text }} from {{ message.userName }} at {{ message.whenSended | ticketDate }}</p>
+      <div class="message" *ngFor="let message of currentDialogMessages">
+        <span class="message-text">{{ message.text }}</span>
+        <span class="message-text-info">{{ message.userName }} {{ message.whenSended | ticketDate }}</span>
         <div class="message-attachments" *ngIf="message.attachments.length != 0">
           <div *ngFor="let attachment of message.attachments">
             <p class="attachment" (click)="downloadAttachment(attachment)">Download Attachment</p>
@@ -65,3 +50,17 @@
   </div>
 
 </div>
+
+<p-dialog header="Reassign Ticket" [(visible)]="display" [draggable]="false" position="center">
+  <p>Choose admin to reassign ticket?</p>
+  <div *ngIf="admins">
+    <div class="admins" *ngFor="let admin of admins">
+      <div *ngIf="currentTicket">
+        <p *ngIf="admin.id != currentTicket.adminId"
+           class="link"
+           (click)="reassign(currentTicket.id, admin.id)">
+          {{ admin.email }}</p>
+      </div>
+    </div>
+  </div>
+</p-dialog>

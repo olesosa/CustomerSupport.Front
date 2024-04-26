@@ -15,10 +15,19 @@
   </div>
 </form>
 
-<p-dialog header="Verification issue" [(visible)]="display" position="top">
+<p-dialog header="Verification issue" [(visible)]="verificationIssue" [draggable]="false" position="top">
   <p>Either email or password is wrong</p>
   <div class="dialog-btn">
-    <button (click)="display=false" pButton>
+    <button (click)="verificationIssue=false" pButton>
+      <i class="pi pi-check" style="font-size: 1.2rem"></i>
+    </button>
+  </div>
+</p-dialog>
+
+<p-dialog header="Email is not confirmed" [(visible)]="emailNotConfirmed" [draggable]="false" position="top">
+  <p>Please go confirm your email to continue</p>
+  <div class="dialog-btn">
+    <button (click)="verificationIssue=false" pButton>
       <i class="pi pi-check" style="font-size: 1.2rem"></i>
     </button>
   </div>

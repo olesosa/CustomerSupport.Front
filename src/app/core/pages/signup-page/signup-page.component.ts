@@ -1,7 +1,7 @@
 import {Component, OnDestroy} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {UserService} from "../../../shared/services/user.service";
-import {catchError, finalize, from, of, Subject, takeUntil} from "rxjs";
+import {catchError, finalize, from, of, Subject, switchMap, takeUntil} from "rxjs";
 import {UserSignup} from "../../../shared/interfaces/user-signup";
 import {Router} from "@angular/router";
 import {CustomValidator} from "../../../shared/validators/custom-validator";
@@ -61,7 +61,6 @@ export class SignupPageComponent implements OnDestroy {
       )
       .subscribe({
         next: () => {
-          this.router.navigateByUrl('')
           this.display = true
         },
         error: (error) => console.log(error)

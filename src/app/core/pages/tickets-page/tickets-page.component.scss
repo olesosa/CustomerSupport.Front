@@ -50,8 +50,20 @@
     width: 100%;
     display: flex;
     justify-content: center;
-    .graphic{
-      width: 60%;
+    align-items: center;
+    margin-bottom: 20px;
+    margin-top: 20px;
+
+    .graphic-bar{
+      width: 50%;
+    }
+    .graphic-pie{
+      width: 25%;
     }
   }
+}
+
+p-chart{
+  width: 60vh;
+  height: 40vh;
 }

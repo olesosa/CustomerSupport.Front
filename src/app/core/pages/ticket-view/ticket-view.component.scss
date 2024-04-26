@@ -77,10 +77,17 @@
     display: flex;
     flex-direction: column;
 
-
     .ticket-element {
       label {
         color: $accent-color;
+      }
+
+      .ticket-content{
+        white-space: pre-line;
+        word-wrap: break-word;
+        max-width: 30vh;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
     }
   }
@@ -88,11 +95,13 @@
 }
 
 .dialog {
+  padding: 20px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-}
+  align-items: center;
 
-.button {
-
+  .dialog-btn {
+    margin-top: 20px;
+    text-align: center;
+  }
 }
